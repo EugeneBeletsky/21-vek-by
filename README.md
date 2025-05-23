@@ -1,0 +1,1 @@
+This project will cover e2e tests for https://www.21vek.by/
