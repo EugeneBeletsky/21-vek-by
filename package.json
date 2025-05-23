@@ -1,0 +1,49 @@
+{
+  "name": "21-vek",
+  "version": "1.0.0",
+  "description": "This project will cover e2e tests for https://www.21vek.by/",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EugeneBeletsky/21-vek-by.git"
+  },
+  "keywords": [],
+  "scripts": {
+    "format": "prettier --write .",
+    "lint": "eslint . --ext .ts",
+    "lint:fix": "eslint . --ext .ts --fix",
+    "test": "playwright test",
+    "test:smoke": "playwright test --grep @smoke",
+    "test:regression": "playwright test --grep @regression",
+    "test:chrome": "playwright test --project=chromium",
+    "test:parallel": "playwright test --workers=4",
+    "test:headed": "playwright test --headed",
+    "test:debug": "playwright test --debug",
+    "test:allure": "playwright test --reporter=allure-playwright --output=allure-results",
+    "allure:generate": "npx allure generate allure-results --clean",
+    "allure:open": "npx allure open allure-report",
+    "report": "playwright show-report"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/EugeneBeletsky/21-vek-by/issues"
+  },
+  "homepage": "https://github.com/EugeneBeletsky/21-vek-by#readme",
+  "dependencies": {
+    "@playwright/test": "^1.52.0",
+    "@types/node": "^22.15.21",
+    "dotenv": "^16.5.0",
+    "typescript": "^5.8.3",
+    "dayjs": "^1.11.13"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^8.32.1",
+    "@typescript-eslint/parser": "^8.32.1",
+    "allure-playwright": "^3.2.2",
+    "eslint": "^9.27.0",
+    "eslint-plugin-playwright": "^2.2.0",
+    "npm": "^11.4.1",
+    "prettier": "^3.5.3"
+  }
+}
