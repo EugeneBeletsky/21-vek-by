@@ -8,6 +8,9 @@ dotenv.config();
 const config: PlaywrightTestConfig = {
   globalTimeout: 180000, // Maximum time the whole test suite can run,
   timeout: 180000, // Timeout for each test
+  // baseURL: process.env.BASE_URL || 'https://21vek.by',
+  // globalSetup: require.resolve('./global-setup'),
+  // globalTeardown: require.resolve('./global-teardown'),
 };
 
 /**
@@ -48,6 +51,10 @@ export default defineConfig({
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
+
+    actionTimeout: 10000,
+    navigationTimeout: 30000,
+    // expect: { timeout: 5000 }
   },
 
   /* Configure projects for major browsers */

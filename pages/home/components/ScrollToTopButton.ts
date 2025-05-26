@@ -1,21 +1,24 @@
 // pages/components/ScrollToTopButtonComponent.ts
 import { Page } from '@playwright/test';
+import BaseComponent from '../../components/BaseComponent';
 
-export default class ScrollToTopButton {
-  constructor(private page: Page) {}
+export default class ScrollToTopButton extends BaseComponent {
+  private buttonSelector = this.page.locator('button.style_upButton__MUSza');
+  private labelSelector = this.page.locator('.style_upButtonLabel__LPAA4');
 
-  private buttonSelector = 'button.style_upButton__MUSza';
-  private labelSelector = '.style_upButtonLabel__LPAA4';
+  constructor(page: Page) {
+    super(page);
+  }
 
   async isVisible(): Promise<boolean> {
-    return this.page.locator(this.buttonSelector).isVisible();
+    return this.buttonSelector.isVisible();
   }
 
   async click() {
-    await this.page.click(this.buttonSelector);
+    await this.buttonSelector.click();
   }
 
-  async getLabel(): Promise<string> {
-    return this.page.locator(this.labelSelector).innerText();
+  async getLabel(): Promise<string | null> {
+    return this.labelSelector.textContent();
   }
 }

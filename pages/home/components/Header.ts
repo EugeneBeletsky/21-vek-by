@@ -12,19 +12,19 @@ export default class Header extends BaseComponent {
 }
 
 export class Search extends BaseComponent {
-  private searchInput = 'input#catalogSearch';
-  private searchButton = 'button.Search_searchBtn__Tk7Gw';
+  private searchInput = this.page.locator('input#catalogSearch');
+  private searchButton = this.page.locator('button.Search_searchBtn__Tk7Gw');
 
   constructor(page: Page) {
     super(page);
   }
 
   async typeSearch(query: string) {
-    await this.page.fill(this.searchInput, query);
+    await this.searchInput.fill(query);
   }
 
   async clickSearch() {
-    await this.page.click(this.searchButton);
+    await this.searchButton.click();
   }
 
   async search(query: string) {
@@ -33,6 +33,7 @@ export class Search extends BaseComponent {
   }
 
   async isVisible(): Promise<boolean> {
-    return this.page.locator(this.searchInput).isVisible();
+    return this.searchInput.isVisible();
   }
+  
 }
