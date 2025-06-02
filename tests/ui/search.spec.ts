@@ -1,4 +1,5 @@
 import { test, expect, Page, BrowserContext } from '@playwright/test';
+import { config } from '../../utils/config';
 import { createLoggedInContext } from '../../utils/session';
 import HomePage from '../../pages/home/HomePage';
 
@@ -15,7 +16,7 @@ test.beforeEach(async ({ browser }) => {
   const guestCookies = await context.cookies();
 
   // 2. Логинимся через API, передавая гостевые куки
-  await createLoggedInContext(context, 'eugenebeletsky@gmail.com', '21vek_2025', guestCookies as never[]);
+  await createLoggedInContext(context, config.credentials.valid.email, config.credentials.valid.password, guestCookies as never[]);
 
   // 3. Перезагружаем страницу, чтобы применились все куки
   await page.reload();

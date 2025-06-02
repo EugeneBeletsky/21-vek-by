@@ -13,9 +13,9 @@ export class AuthClient {
       data: { email, password },
     });
 
-    if (!res.ok()) {
-      throw new Error(`Login failed with status ${res.status()}`);
-    }
+    // if (!res.ok()) {
+    //   throw new Error(`Login failed with status ${res.status()}`);
+    // }
 
     const cookies = res.headers()['set-cookie'];
     if (cookies) {

@@ -8,6 +8,7 @@ export default class LoginModal extends BaseComponent {
   private submitButton = this.page.getByTestId('loginSubmit');
   private closeButton = this.page.getByTestId('modalClose');
   private errorMessage = this.page.locator('.ErrorMessage-module__message');
+  private modalLoader = this.page.getByTestId('loader');
   
 
   constructor(page: Page) {
@@ -34,6 +35,7 @@ export default class LoginModal extends BaseComponent {
     await this.fillEmail(email);
     await this.fillPassword(password);
     await this.submit();
+    await this.waitForLoaderDisappear();
   }
 
   async close() {
@@ -45,5 +47,12 @@ export default class LoginModal extends BaseComponent {
       return this.errorMessage.textContent();
     }
     return null;
+  }
+
+  async waitForLoaderDisappear() {
+    let loader = this.modalLoader;
+    if (await loader.isVisible()) {
+      await loader.waitFor({ state: 'hidden' });
+    }
   }
 } 
