@@ -1,6 +1,6 @@
 import { defineConfig, devices } from '@playwright/test';
 import { PlaywrightTestConfig } from '@playwright/test';
-import dotenv from 'dotenv';
+import * as dotenv from 'dotenv';
 
 // Configure dotenv
 dotenv.config();
@@ -34,9 +34,6 @@ export default defineConfig({
   ],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
-    /* Base URL to use in actions like `await page.goto('/')`. */
-    // baseURL: 'http://127.0.0.1:3000',
-
     // Enhanced video settings
     video: {
       mode: 'retain-on-failure',

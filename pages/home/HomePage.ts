@@ -1,12 +1,12 @@
 // pages/HomePage.ts
-import { Page } from '@playwright/test';
+import { Page, expect } from '@playwright/test';
 import BasePage from '../../pages/BasePage';
 import Header from './components/Header';
 import ScrollToTopButton from './components/ScrollToTopButton';
 import LoginModal from './components/LoginModal';
 import CookieModal from './components/CookieModal';
 import AccountModal from './components/AccountModal';
-
+import { config } from '../../utils/config';
 
 export default class HomePage extends BasePage {
   public readonly scrollToTop: ScrollToTopButton;
@@ -22,6 +22,16 @@ export default class HomePage extends BasePage {
     this.loginModal = new LoginModal(page);
     this.cookieModal = new CookieModal(page);
     this.accountModal = new AccountModal(page);
+  }
+
+  async loginViaUI(email: string, password: string) {
+    await this.goto(config.baseURL);
+    await this.cookieModal.reject();
+    await this.accountModal.openAccountModal();
+    await this.accountModal.clickLoginButton();
+    await expect(await this.loginModal.getModal()).toBeVisible();
+    await this.loginModal.login(email, password);
+    await expect(await this.loginModal.getModal()).toBeHidden();
   }
 
 
