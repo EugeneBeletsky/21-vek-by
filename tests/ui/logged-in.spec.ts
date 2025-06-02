@@ -2,7 +2,7 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 
 // @ts-ignore: кастомная фикстура
-import { test, expect } from '../fixtures/login.fixture';
+import { test, expect } from '../../fixtures/login.fixture';
 import { Page } from '@playwright/test';
 
 // Пример теста с использованием loggedInPage

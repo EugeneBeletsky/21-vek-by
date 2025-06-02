@@ -29,6 +29,7 @@ export class Search extends BaseComponent {
 
   async search(query: string) {
     await this.typeSearch(query);
+    await this.page.waitForTimeout(1000);
     await this.clickSearch();
   }
 

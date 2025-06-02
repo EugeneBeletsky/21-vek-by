@@ -9,7 +9,7 @@ export const test = base.extend<{ loggedInPage: Page }>({
     await home.accountModal.openAccountModal();
     await home.accountModal.clickLoginButton();
     await home.loginModal.login(process.env.LOGIN_EMAIL!, process.env.LOGIN_PASSWORD!);
-    await expect(await home.loginModal.isVisible()).toBeFalsy();
+    await expect(await home.loginModal.getModal()).toBeHidden();
     await use(page);
   },
 });
