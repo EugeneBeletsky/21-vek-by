@@ -24,7 +24,7 @@ export default class HomePage extends BasePage {
     this.accountModal = new AccountModal(page);
   }
 
-  async loginViaUI(email: string, password: string) {
+  async loginViaUI(email = config.credentials.valid.email, password = config.credentials.valid.password) {
     await this.goto(config.baseURL);
     await this.cookieModal.reject();
     await this.accountModal.openAccountModal();
