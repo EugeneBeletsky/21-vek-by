@@ -1,5 +1,3 @@
-// // tests/api/auth/authClient.ts
-
 import { APIRequestContext, APIResponse, request } from '@playwright/test';
 
 export class AuthClient {
@@ -12,10 +10,6 @@ export class AuthClient {
     const res = await this.request.post('/sso/login-by-email', {
       data: { email, password },
     });
-
-    // if (!res.ok()) {
-    //   throw new Error(`Login failed with status ${res.status()}`);
-    // }
 
     const cookies = res.headers()['set-cookie'];
     if (cookies) {

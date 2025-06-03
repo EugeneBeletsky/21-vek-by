@@ -1,11 +1,16 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, Page, BrowserContext } from '@playwright/test';
 import { config } from '../../utils/config';
 import HomePage from '../../pages/home/HomePage';
 
 //VARS
 let home: HomePage;
+let page: Page;
+let context: BrowserContext;
 
-test.beforeEach(async ({ page }) => {
+
+test.beforeEach(async ({ browser }) => {
+  context = await browser.newContext();
+  page = await context.newPage();
   home = new HomePage(page);
 });
 
