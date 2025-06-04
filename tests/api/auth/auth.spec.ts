@@ -1,12 +1,9 @@
-// tests/api/auth/auth.test.ts
 import { test, expect } from '@playwright/test';
 import { createAPIContext } from '../../../api/request';
 import { AuthClient } from './authClient';
-import * as dotenv from 'dotenv';
+import { config } from '../../../utils/config';
 
-dotenv.config();
-
-test.describe('API: Login', () => {
+test.describe('API: [Login]', () => {
   let authClient: AuthClient;
 
   test.beforeEach(async () => {
@@ -14,16 +11,33 @@ test.describe('API: Login', () => {
     authClient = new AuthClient(context);
   });
 
-  test('Success login', async () => {
-    const res = await authClient.login(process.env.LOGIN_EMAIL!, process.env.LOGIN_PASSWORD!);
-    expect(res.ok()).toBeTruthy();
-    const body = await res.json();
-    console.log('body:', body);
+  test('T1 [Login] Success login', { tag: ['@regression', '@P1'] }, async () => {
+    const response = await authClient.login();
+    
+    expect(response.ok()).toBeTruthy();
+    expect(response.status()).toBe(200);
+    expect(response.statusText()).toBe('OK');
+
+    const body = await response.json();
     expect(body).toHaveProperty('data.id');
   });
 
-  test('Failed login', async () => {
-    const res = await authClient.login(process.env.LOGIN_EMAIL!, 'wrong_password');
-    expect(res.status()).toBe(422);
+  test('T2 [Login] Failed login with invalid password', { tag: ['@regression', '@P2'] }, async () => {
+    const response = await authClient.login(config.credentials.valid.email, config.credentials.invalid.password);
+
+    expect(response.status()).toBe(422);
+  });
+
+  test('T3 [Login] Failed login with invalid email', { tag: ['@regression', '@P2'] }, async () => {
+    const response = await authClient.login(config.credentials.invalid.email, config.credentials.valid.password);
+
+    expect(response.status()).toBe(422);
+  });
+
+  test('T4 [Logout] Success logout', { tag: ['@regression', '@P2'] }, async () => {
+    await authClient.login();
+    const response = await authClient.logout();
+
+    expect(response.status()).toBe(204);
   });
 });

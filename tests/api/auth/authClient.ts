@@ -1,23 +1,25 @@
-import { APIRequestContext, APIResponse, request } from '@playwright/test';
+import { APIRequestContext, APIResponse, request, Cookie } from '@playwright/test';
+import { config } from '../../../utils/config';
 
 export class AuthClient {
   private accessToken: string | null = null;
   private refreshToken: string | null = null;
+  private cookies: Cookie[] = [];
 
   constructor(private request: APIRequestContext) {}
 
-  async login(email: string, password: string): Promise<APIResponse> {
-    const res = await this.request.post('/sso/login-by-email', {
+  async login(email = config.credentials.valid.email, password = config.credentials.valid.password): Promise<APIResponse> {
+    const response = await this.request.post('/sso/login-by-email', {
       data: { email, password },
     });
 
-    const cookies = res.headers()['set-cookie'];
+    const cookies = response.headers()['set-cookie'];
     if (cookies) {
       this.accessToken = this.extractCookie(cookies, 'accessToken');
       this.refreshToken = this.extractCookie(cookies, 'refreshToken');
     }
 
-    return res;
+    return response;
   }
 
   private extractCookie(rawCookies: string | string[], name: string): string | null {
@@ -36,7 +38,12 @@ export class AuthClient {
     };
   }
 
+  getCookies() {
+    return this.cookies;
+  }
+
   async logout(): Promise<APIResponse> {
-    return this.request.post('/sso/logout');
+    const response = await this.request.post('/sso/logout');
+    return response;
   }
 }

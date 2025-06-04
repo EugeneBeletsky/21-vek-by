@@ -1,4 +1,3 @@
-// src/utils/config.ts
 import * as dotenv from 'dotenv';
 
 dotenv.config();
@@ -11,6 +10,7 @@ export const config = {
       password: process.env.LOGIN_PASSWORD!,
     },
     invalid: {
+      email: 'invalid_email@gmail.com',
       password: 'wrong_password',
     },
   },
