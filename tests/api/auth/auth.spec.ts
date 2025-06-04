@@ -11,7 +11,7 @@ test.describe('API: [Login]', () => {
     authClient = new AuthClient(context);
   });
 
-  test('T1 [Login] Success login', { tag: ['@regression', '@P1'] }, async () => {
+  test('T1 [Login] Success login', { tag: ['@api', '@regression', '@P1'] }, async () => {
     const response = await authClient.login();
     
     expect(response.ok()).toBeTruthy();
@@ -22,19 +22,19 @@ test.describe('API: [Login]', () => {
     expect(body).toHaveProperty('data.id');
   });
 
-  test('T2 [Login] Failed login with invalid password', { tag: ['@regression', '@P2'] }, async () => {
+  test('T2 [Login] Failed login with invalid password', { tag: ['@api', '@regression', '@P2'] }, async () => {
     const response = await authClient.login(config.credentials.valid.email, config.credentials.invalid.password);
 
     expect(response.status()).toBe(422);
   });
 
-  test('T3 [Login] Failed login with invalid email', { tag: ['@regression', '@P2'] }, async () => {
+  test('T3 [Login] Failed login with invalid email', { tag: ['@api', '@regression', '@P2'] }, async () => {
     const response = await authClient.login(config.credentials.invalid.email, config.credentials.valid.password);
 
     expect(response.status()).toBe(422);
   });
 
-  test('T4 [Logout] Success logout', { tag: ['@regression', '@P2'] }, async () => {
+  test('T4 [Logout] Success logout', { tag: ['@api', '@regression', '@P2'] }, async () => {
     await authClient.login();
     const response = await authClient.logout();
 
