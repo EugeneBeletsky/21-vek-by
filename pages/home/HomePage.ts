@@ -9,6 +9,7 @@ import AccountModal from './components/AccountModal';
 import { config } from '../../utils/config';
 
 export default class HomePage extends BasePage {
+  private mainLogoButton = this.page.locator('div.logotype');
   public readonly scrollToTop: ScrollToTopButton;
   public readonly header: Header;
   public readonly loginModal: LoginModal;
@@ -22,6 +23,10 @@ export default class HomePage extends BasePage {
     this.loginModal = new LoginModal(page);
     this.cookieModal = new CookieModal(page);
     this.accountModal = new AccountModal(page);
+  }
+
+  async clickMainLogoButton() {
+    await this.mainLogoButton.click();
   }
 
   async loginViaUI(email = config.credentials.valid.email, password = config.credentials.valid.password) {

@@ -1,13 +1,11 @@
 import { BrowserContext, request } from '@playwright/test';
 import { AuthClient } from '../tests/api/auth/authClient';
-import * as dotenv from 'dotenv';
-
-dotenv.config();
+import { config } from './config';
 
 export async function createLoggedInContext(
   browser: BrowserContext,
-  email = process.env.LOGIN_EMAIL!,
-  password = process.env.LOGIN_PASSWORD!,
+  email = config.credentials.valid.email,
+  password = config.credentials.valid.password,
   guestCookies = []
 ) {
   const apiContext = await request.newContext({
@@ -15,20 +13,15 @@ export async function createLoggedInContext(
     extraHTTPHeaders: {
       'accept': 'application/json',
       'content-type': 'application/json',
-      'origin': 'https://www.21vek.by',
-      'referer': 'https://www.21vek.by/',
-      // Добавьте нужные заголовки, если требуется
+      'origin': config.baseURL,
+      'referer': config.baseURL,
     },
-    // Передаём гостевые куки
-    storageState: { cookies: guestCookies, origins: [{ origin: 'https://www.21vek.by', localStorage: [] }] }
+    storageState: { cookies: guestCookies, origins: [{ origin: config.baseURL, localStorage: [] }] }
   });
 
   const authClient = new AuthClient(apiContext);
   await authClient.login(email, password);
   const { accessToken, refreshToken } = authClient.getTokens();
-
-  console.log('accessToken:', accessToken);
-  console.log('refreshToken:', refreshToken);
 
   await browser.addCookies([
     {
