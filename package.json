@@ -15,6 +15,7 @@
     "test": "playwright test",
     "test:smoke": "playwright test --grep @smoke",
     "test:regression": "playwright test --grep @regression",
+    "test:api": "playwright test --grep @api",
     "test:chrome": "playwright test --project=chromium",
     "test:parallel": "playwright test --workers=4",
     "test:headed": "playwright test --headed",
@@ -22,7 +23,9 @@
     "test:allure": "playwright test --reporter=allure-playwright --output=allure-results",
     "allure:generate": "npx allure generate allure-results --clean",
     "allure:open": "npx allure open allure-report",
-    "report": "playwright show-report"
+    "report": "playwright show-report",
+    "report:allureLocal": "allure generate ./allure-results --output ./allure-report --clean && allure open ./allure-report",
+    "report:allureCI": "npx allure generate ./allure-results --output ./allure-report --clean"
   },
   "author": "",
   "license": "ISC",
@@ -41,6 +44,7 @@
     "@typescript-eslint/eslint-plugin": "^8.32.1",
     "@typescript-eslint/parser": "^8.32.1",
     "allure-playwright": "^3.2.2",
+    "allure-commandline": "^2.34.0",
     "eslint": "^9.27.0",
     "eslint-plugin-playwright": "^2.2.0",
     "npm": "^11.4.1",
