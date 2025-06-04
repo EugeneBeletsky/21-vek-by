@@ -1,42 +1,54 @@
-name: Run Playwright Tests with Allure Report
+name: Run Tests with Lint and Allure Report
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
   pull_request:
-    branches:
-      - main
+    branches: [main]
   workflow_dispatch:
 
+env:
+  BASE_URL: ${{ secrets.BASE_URL }}
+  LOGIN_EMAIL: ${{ secrets.LOGIN_EMAIL }}
+  LOGIN_PASSWORD: ${{ secrets.LOGIN_PASSWORD }}
+  NAME: ${{ secrets.NAME }}
+
 jobs:
-  run-tests:
-    name: Run Playwright E2E Tests
+  lint-and-check:
+    name: Lint and Type Check
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: '20'
 
-      - name: Install dependencies
-        run: npm ci
+      - run: npm ci
+      - run: npm run lint
+      - run: npx tsc --noEmit
 
-      - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
+  e2e-tests:
+    name: Run Playwright E2E Tests
+    needs: lint-and-check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
 
-      - name: Run Playwright tests with Allure
-        run: npm run test:allure
+      - run: npm ci
+      - run: npx playwright install --with-deps
+      - run: npm run test:allure
 
-      - name: Generate Allure report
-        run: npm run report:allureCI
-
-      - name: Archive Allure report
-        uses: actions/upload-artifact@v4
+  report:
+    name: Generate and Upload Allure Report
+    needs: e2e-tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: npm run report:allureCI
+      - uses: actions/upload-artifact@v4
         with:
           name: allure-report
           path: allure-report/
