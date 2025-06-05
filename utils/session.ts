@@ -45,6 +45,5 @@ export async function createLoggedInContext(
     },
   ]);
 
-  const cookies = await browser.cookies();
-  console.log('Cookies in context:', cookies);
+  await browser.cookies();
 }
