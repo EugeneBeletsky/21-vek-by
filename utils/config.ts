@@ -1,5 +1,4 @@
 /* eslint-env node */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 
 import * as dotenv from 'dotenv';
 
