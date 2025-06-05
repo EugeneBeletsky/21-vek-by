@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 import HomePage from '../../pages/home/HomePage';
 import { SearchProductItem } from '../../pages/home/components/SearchProductItem';
 import { loginViaApi } from '../../utils/login';
-import { config } from '../../utils/config'
+import { config } from '../../utils/config';
 
 test.describe('Search tests', () => {
   

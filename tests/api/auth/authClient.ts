@@ -1,4 +1,6 @@
-import { APIRequestContext, APIResponse, request, Cookie } from '@playwright/test';
+/* eslint-disable no-console */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { APIRequestContext, APIResponse, Cookie } from '@playwright/test';
 import { config } from '../../../utils/config';
 
 export class AuthClient {
