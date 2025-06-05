@@ -1,23 +1,21 @@
 /* eslint-env node */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 
 import { defineConfig, devices } from '@playwright/test';
-import { PlaywrightTestConfig } from '@playwright/test';
+// import { PlaywrightTestConfig } from '@playwright/test';
 import * as dotenv from 'dotenv';
 
 // Configure dotenv
 dotenv.config();
 
-const config: PlaywrightTestConfig = {
-  globalTimeout: 180000, // Maximum time the whole test suite can run,
-  timeout: 180000, // Timeout for each test
-};
+
 
 
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
+  timeout: 180000,
+  globalTimeout: 180000,
   testDir: './tests',
   /* Run tests in files in parallel */
   fullyParallel: false,
