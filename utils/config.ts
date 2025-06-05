@@ -1,6 +1,5 @@
 /* eslint-env node */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable no-console */
+
 import * as dotenv from 'dotenv';
 
 dotenv.config();

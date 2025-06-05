@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { BrowserContext, request } from '@playwright/test';
 import { AuthClient } from '../tests/api/auth/authClient';
 import { config } from './config';

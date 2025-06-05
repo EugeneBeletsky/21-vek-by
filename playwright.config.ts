@@ -1,6 +1,5 @@
 /* eslint-env node */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable no-console */
 
 import { defineConfig, devices } from '@playwright/test';
 import { PlaywrightTestConfig } from '@playwright/test';
@@ -12,10 +11,8 @@ dotenv.config();
 const config: PlaywrightTestConfig = {
   globalTimeout: 180000, // Maximum time the whole test suite can run,
   timeout: 180000, // Timeout for each test
-  // baseURL: process.env.BASE_URL || 'https://21vek.by',
-  // globalSetup: require.resolve('./global-setup'),
-  // globalTeardown: require.resolve('./global-teardown'),
 };
+
 
 /**
  * See https://playwright.dev/docs/test-configuration.
