@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { APIRequestContext, APIResponse, Cookie } from '@playwright/test';
 import { config } from '../../../utils/config';
 
@@ -6,7 +7,6 @@ export class AuthClient {
   private refreshToken: string | null = null;
   private cookies: Cookie[] = [];
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   constructor(private request: APIRequestContext) {}
 
   async login(email = config.credentials.valid.email, password = config.credentials.valid.password): Promise<APIResponse> {
