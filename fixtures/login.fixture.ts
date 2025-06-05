@@ -1,4 +1,4 @@
-import { test as base, expect, Page } from '@playwright/test';
+import { test as base, Page } from '@playwright/test';
 import HomePage from '../pages/home/HomePage';
 
 export const test = base.extend<{ loggedInPage: Page }>({
