@@ -28,28 +28,42 @@ jobs:
       - run: npx tsc --noEmit
 
   e2e-tests:
-    name: Run Playwright E2E Tests
+    name: Run Playwright Tests in Docker
     needs: lint-and-check
     runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.52.0-jammy
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
       - run: npm ci
-      - run: npx playwright install --with-deps
       - run: npm run test:allure
+      - name: Upload Allure Results
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-results
+          path: allure-results
 
-  report:
-    name: Generate and Upload Allure Report
+  generate-report:
+    name: Generate Allure Report
     needs: e2e-tests
     if: always()
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: npm run report:allureCI
-      - uses: actions/upload-artifact@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: allure-results
+          path: allure-results
+
+      - name: Install Allure CLI
+        run: npm install -g allure-commandline
+
+      - name: Generate Allure Report
+        run: |
+          allure generate ./allure-results --clean -o ./allure-report
+          touch ./allure-report/.nojekyll
+      - name: Upload Allure Report
+        uses: actions/upload-artifact@v4
         with:
           name: allure-report
           path: allure-report/
