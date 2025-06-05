@@ -1,3 +1,7 @@
+/* eslint-env node */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable no-console */
+
 import { defineConfig, devices } from '@playwright/test';
 import { PlaywrightTestConfig } from '@playwright/test';
 import * as dotenv from 'dotenv';
