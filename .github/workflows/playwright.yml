@@ -44,6 +44,7 @@ jobs:
   report:
     name: Generate and Upload Allure Report
     needs: e2e-tests
+    if: always()
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

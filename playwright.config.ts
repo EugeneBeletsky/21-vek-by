@@ -7,9 +7,6 @@ import * as dotenv from 'dotenv';
 // Configure dotenv
 dotenv.config();
 
-
-
-
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
