@@ -1,9 +1,9 @@
-import { Page } from '@playwright/test';
+import { Locator } from '@playwright/test';
 
 export default class BaseComponent {
-  protected readonly page: Page;
+  protected readonly element: Locator;
 
-  constructor(page: Page) {
-    this.page = page;
+  constructor(element: Locator) {
+    this.element = element;
   }
 } 

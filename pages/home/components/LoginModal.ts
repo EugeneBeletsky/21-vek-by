@@ -1,22 +1,22 @@
 import BaseComponent from '../../components/BaseComponent';
-import { Page, Locator } from '@playwright/test';
+import { Locator } from '@playwright/test';
 
 export default class LoginModal extends BaseComponent {
-  private modalSelector = this.page.getByTestId('modal');
-  private emailInput = this.page.getByTestId('login-form-email');
-  private passwordInput = this.page.getByTestId('login-form-password');
-  private submitButton = this.page.getByTestId('loginSubmit');
-  private closeButton = this.page.getByTestId('modalClose');
-  private errorMessage = this.page.locator('.ErrorMessage-module__message');
-  private modalLoader = this.page.getByTestId('loader');
+  private modalContainer = this.element.locator('.LoginForm_container__6zfxM');
+  private emailInput = this.element.getByTestId('login-form-email');
+  private passwordInput = this.element.getByTestId('login-form-password');
+  private submitButton = this.element.getByTestId('loginSubmit');
+  private closeButton = this.element.getByTestId('modalClose');
+  private errorMessage = this.element.locator('.ErrorMessage-module__message');
+  private modalLoader = this.element.getByTestId('loader');
   
 
-  constructor(page: Page) {
-    super(page);
+  constructor(element: Locator) {
+    super(element);
   }
 
   async getModal(): Promise<Locator> {
-    return this.modalSelector;
+    return this.modalContainer;
   }
 
   async fillEmail(email: string) {

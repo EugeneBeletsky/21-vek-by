@@ -1,23 +1,39 @@
-// pages/components/HeaderComponent.ts
 import BaseComponent from '../../components/BaseComponent';
-import { Page, Locator } from '@playwright/test';
+import { Locator } from '@playwright/test';
 
 export default class Header extends BaseComponent {
+  public userToolsToggler = this.element.locator('button.styles_userToolsToggler__c2aHe');
   readonly search: Search;
 
-  constructor(page: Page) {
-    super(page);
-    this.search = new Search(page);
+  constructor(element: Locator) {
+    super(element);
+    this.search = new Search(element);
   }
+
+  // async openAccountModal() {
+  //   await this.element.locator('.styles_header__W192J')
+  //   .locator('.styles_headerReactLine__FsvlC')
+  //   .locator('.styles_headerReactWrapper__TTCde')
+  //   .locator(this.userToolsToggler).click();
+  // }
+
+  async getAccountModal() {
+    return this.userToolsToggler;
+  }
+
+
+  // async getAccountModal(): Promise<Locator> {
+  //   return this.element.filter({has: this.userToolsToggler});
+  // }
 }
 
 export class Search extends BaseComponent {
-  private searchInput = this.page.locator('input#catalogSearch');
-  private searchButton = this.page.locator('button.Search_searchBtn__Tk7Gw');
-  private searchResults = this.page.locator('.SearchSuggestList_listContainer__v7wVv');
+  private searchInput = this.element.locator('input#catalogSearch');
+  private searchButton = this.element.locator('button.Search_searchBtn__Tk7Gw');
+  private searchResults = this.element.locator('.SearchSuggestList_listContainer__v7wVv');
 
-  constructor(page: Page) {
-    super(page);
+  constructor(element: Locator) {
+    super(element);
   }
 
   async typeSearch(query: string) {
@@ -32,15 +48,15 @@ export class Search extends BaseComponent {
   async searchItem(item: string) {
     await this.typeSearch(item);
     await this.searchInput.click();
-    await this.page.waitForTimeout(1000);
-    await this.page.waitForLoadState();
+    // await this.page.waitForTimeout(1000);
+    // await this.page.waitForLoadState();
     await this.clickSearch();
   }
 
   async searchByList(item: string) {
     await this.typeSearch(item);
-    await this.page.waitForTimeout(1000);
-    await this.page.waitForLoadState();
+    // await this.page.waitForTimeout(1000);
+    // await this.page.waitForLoadState();
     let searchResults = await this.getSearchResults();
     for (let result of searchResults) {
       if (await result.textContent() === item) {

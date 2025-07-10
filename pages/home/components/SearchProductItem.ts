@@ -1,9 +1,9 @@
 import BaseComponent from '../../components/BaseComponent';
-import { Page, Locator } from '@playwright/test';
+import { Locator } from '@playwright/test';
 
 
 export class SearchProductItem extends BaseComponent {
-  private searchProductList = this.page.getByTestId('search-result-product-list');
+  private searchProductList = this.element.getByTestId('search-result-product-list');
   private productItem = this.searchProductList.locator('.style_product__xVGB6');
   private addToCartButton = this.productItem.getByRole('button', { name: 'Добавить в корзину' });
   private itemPriceBlock = this.productItem.getByTestId('card-price');
@@ -11,8 +11,8 @@ export class SearchProductItem extends BaseComponent {
   private itemInfo = this.productItem.getByTestId('card-info');
   
   
-  constructor(page: Page) {
-    super(page);
+  constructor(element: Locator) {
+    super(element);
   }
 
   async waitForSearchResult() {
