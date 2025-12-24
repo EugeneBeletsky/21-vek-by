@@ -1,6 +1,7 @@
 import js from '@eslint/js';
 import tseslint from '@typescript-eslint/eslint-plugin';
 import tsparser from '@typescript-eslint/parser';
+import playwright from 'eslint-plugin-playwright';
 
 export default [
   js.configs.recommended,
@@ -31,6 +32,13 @@ export default [
       '@typescript-eslint/explicit-function-return-type': 'off',
       '@typescript-eslint/no-unused-vars': 'warn',
       'no-console': ['warn', { allow: ['warn'] }],
+    },
+  },
+  {
+    files: ['tests/**/*.ts'],
+    plugins: { playwright },
+    rules: {
+      ...playwright.configs.recommended.rules,
     },
   },
 ];

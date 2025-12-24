@@ -8,7 +8,7 @@ export default class BasePage {
   }
 
   public async goto(path: string = '/'): Promise<void> {
-    await this.page.goto(path);
+    await this.page.goto(path, { waitUntil: 'domcontentloaded' });
   }
 
   public async waitForPageTitle(expectedTitle: string): Promise<void> {
@@ -24,11 +24,11 @@ export default class BasePage {
   }
 
   public async click(selector: string): Promise<void> {
-    await this.page.click(selector, { timeout: 2000 });
+    await this.page.click(selector, { timeout: 5000 });
   }
 
   public async type(selector: string, text: string): Promise<void> {
-    await this.page.fill(selector, text, { timeout: 2000 });
+    await this.page.fill(selector, text, { timeout: 5000 });
   }
 
   public async getText(selector: string): Promise<string> {

@@ -21,6 +21,10 @@ export default class Header extends BaseComponent {
     return this.userToolsToggler;
   }
 
+  async openAccountMenu() {
+    await this.userToolsToggler.click();
+  }
+
 
   // async getAccountModal(): Promise<Locator> {
   //   return this.element.filter({has: this.userToolsToggler});
@@ -48,15 +52,11 @@ export class Search extends BaseComponent {
   async searchItem(item: string) {
     await this.typeSearch(item);
     await this.searchInput.click();
-    // await this.page.waitForTimeout(1000);
-    // await this.page.waitForLoadState();
     await this.clickSearch();
   }
 
   async searchByList(item: string) {
     await this.typeSearch(item);
-    // await this.page.waitForTimeout(1000);
-    // await this.page.waitForLoadState();
     let searchResults = await this.getSearchResults();
     for (let result of searchResults) {
       if (await result.textContent() === item) {

@@ -1,32 +1,16 @@
-import { test, expect, Page, BrowserContext } from '@playwright/test';
+import { test, expect } from '@playwright/test';
 import HomePage from '../../pages/home/HomePage';
 
-//VARS
-let home: HomePage;
-let page: Page;
-let context: BrowserContext;
-
-
-test.beforeEach(async ({ browser }) => {
-  context = await browser.newContext();
-  page = await context.newPage();
-  home = new HomePage(page);
-});
-
 test.describe('[Logout tests]', () => {
-  test('T1 [Logout] should logout successfully', { tag: ['@regression', '@P2'] }, async () => {
+  test('T1 [Logout] should logout successfully', { tag: ['@regression', '@P2'] }, async ({ page }) => {
+    const home = new HomePage(page);
+    await home.loginViaUI();
 
-    test.step('T1.1 [Login] should login successfully', async () => {
-      await home.loginViaUI();
-      await page.waitForTimeout(3000);
-    });
-
-    test.step('T1.2 [Logout] should logout successfully', async () => {
-      await home.accountModal.openAccountModal();
+    await test.step('T1.2 [Logout] should logout successfully', async () => {
+      await home.header.openAccountMenu();
       await (await home.accountModal.getAccountButtonByText('Выход')).click();
-      await home.accountModal.openAccountModal();
+      await home.header.openAccountMenu();
       await expect(await home.accountModal.getLoginButton()).toBeVisible();
     });
-
   });  
 });

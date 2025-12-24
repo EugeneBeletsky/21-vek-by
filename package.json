@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "This project will cover e2e tests for https://www.21vek.by/",
   "main": "index.js",
+  "type": "module",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/EugeneBeletsky/21-vek-by.git"
@@ -13,6 +14,8 @@
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --ext .ts --fix",
     "test": "playwright test",
+    "test:ui": "playwright test --grep-invert @api --project=chromium",
+    "test:ui:auth": "playwright test --project=chromium-auth",
     "test:smoke": "playwright test --grep @smoke",
     "test:regression": "playwright test --grep @regression",
     "test:api": "playwright test --grep @api",
