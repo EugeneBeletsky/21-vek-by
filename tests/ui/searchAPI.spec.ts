@@ -20,12 +20,12 @@ test.describe('Search tests', () => {
   test('T1 [Search] Search input is visible', { tag: ['@regression', '@P2'] }, async ({ page }) => {
     const home = new HomePage(page);
     await page.waitForLoadState();
-    expect(await home.header.search.isVisible()).toBe(true);
+    await expect(await home.header.search.getInput()).toBeVisible();
   });
 
   test('T2 [Search] Search for a product returns relevant result', { tag: ['@regression', '@P2'] }, async ({ page }) => {
     const home = new HomePage(page);
-    const searchProductItem = new SearchProductItem(page);
+    const searchProductItem = new SearchProductItem(page.getByTestId('search-result-product-list'));
 
     await home.header.search.searchItem('телевизор');
     await searchProductItem.waitForSearchResult();
@@ -39,7 +39,7 @@ test.describe('Search tests', () => {
 
   test('T3 [Search] All products have price > 0', { tag: ['@regression', '@P2'] }, async ({ page }) => {    
     const home = new HomePage(page);
-    const searchProductItem = new SearchProductItem(page);
+    const searchProductItem = new SearchProductItem(page.getByTestId('search-result-product-list'));
 
     await home.header.search.searchItem('телевизор');
     await searchProductItem.waitForSearchResult();
@@ -52,7 +52,7 @@ test.describe('Search tests', () => {
 
   test('T4 [Search] All products have name/info', { tag: ['@regression', '@P2'] }, async ({ page }) => {
     const home = new HomePage(page);
-    const searchProductItem = new SearchProductItem(page);
+    const searchProductItem = new SearchProductItem(page.getByTestId('search-result-product-list'));
 
     await home.header.search.searchItem('телевизор');
     await searchProductItem.waitForSearchResult();

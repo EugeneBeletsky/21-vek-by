@@ -9,7 +9,8 @@ test.beforeEach(async ({ page }) => {
 
 test('T1 [search] Search input is visible' , { tag: ['@regression', '@P1'] }, async ({ page }) => {
   const home = new HomePage(page);
-  expect(await home.header.search.isVisible()).toBe(true);
+  let input = await home.header.search.getInput();
+  await expect(input).toBeVisible();
 });
 
 test('T2 [search] Search for a product on the main page', { tag: ['@regression', '@P2'] }, async ({ page }) => {

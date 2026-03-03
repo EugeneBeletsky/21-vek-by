@@ -10,13 +10,6 @@ export default class Header extends BaseComponent {
     this.search = new Search(element);
   }
 
-  // async openAccountModal() {
-  //   await this.element.locator('.styles_header__W192J')
-  //   .locator('.styles_headerReactLine__FsvlC')
-  //   .locator('.styles_headerReactWrapper__TTCde')
-  //   .locator(this.userToolsToggler).click();
-  // }
-
   async getAccountModal() {
     return this.userToolsToggler;
   }
@@ -24,11 +17,7 @@ export default class Header extends BaseComponent {
   async openAccountMenu() {
     await this.userToolsToggler.click();
   }
-
-
-  // async getAccountModal(): Promise<Locator> {
-  //   return this.element.filter({has: this.userToolsToggler});
-  // }
+  
 }
 
 export class Search extends BaseComponent {
@@ -66,8 +55,8 @@ export class Search extends BaseComponent {
     }
   }
 
-  async isVisible(): Promise<boolean> {
-    return this.searchInput.isVisible();
+  async getInput(): Promise<Locator> {
+    return this.searchInput;
   }
 
   async getSearchResults(): Promise<Locator[]> {

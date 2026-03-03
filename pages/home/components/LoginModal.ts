@@ -19,6 +19,10 @@ export default class LoginModal extends BaseComponent {
     return this.modalContainer;
   }
 
+  async getErrorMessage(): Promise<Locator> {
+    return this.errorMessage;
+  }
+
   async fillEmail(email: string) {
     await this.emailInput.fill(email);
   }
@@ -42,7 +46,7 @@ export default class LoginModal extends BaseComponent {
     await this.closeButton.click();
   }
 
-  async getErrorMessage(): Promise<string | null> {
+  async getErrorMessageText(): Promise<string | null> {
     if (await this.errorMessage.isVisible()) {
       return this.errorMessage.textContent();
     }

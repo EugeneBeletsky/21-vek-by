@@ -26,8 +26,8 @@ test.describe('[Login tests]', () => {
     await home.accountModal.clickLoginButton();
     await expect(await home.loginModal.getModal()).toBeVisible();
     await home.loginModal.login(config.credentials.valid.email, config.credentials.invalid.password);
-    await page.waitForLoadState('networkidle');
-    expect(await home.loginModal.getErrorMessage()).toContain('Неправильный пароль');
+    await expect(await home.loginModal.getErrorMessage()).toBeVisible({ timeout: 10000 });
+    expect(await home.loginModal.getErrorMessageText()).toContain('Неправильный пароль');
   });
 
   test('T3 [Login] should show error on wrong email', { tag: ['@regression', '@P1'] }, async ({ page }) => {
@@ -36,8 +36,8 @@ test.describe('[Login tests]', () => {
     await home.accountModal.clickLoginButton();
     await expect(await home.loginModal.getModal()).toBeVisible();
     await home.loginModal.login(config.credentials.invalid.email, config.credentials.valid.password);
-    await page.waitForLoadState('networkidle');
-    expect(await home.loginModal.getErrorMessage()).toContain('Проверьте электронную почту или ');
+    await expect(await home.loginModal.getErrorMessage()).toBeVisible({ timeout: 10000 });
+    expect(await home.loginModal.getErrorMessageText()).toContain('Проверьте электронную почту или ');
   });
 
   test('T4 [Login] should show error empty password', { tag: ['@regression', '@P1'] }, async ({ page }) => {
@@ -46,7 +46,7 @@ test.describe('[Login tests]', () => {
     await home.accountModal.clickLoginButton();
     await expect(await home.loginModal.getModal()).toBeVisible();
     await home.loginModal.login(config.credentials.valid.email, '');
-    await page.waitForLoadState('networkidle');
-    expect(await home.loginModal.getErrorMessage()).toContain('Пароль не указан');
+    await expect(await home.loginModal.getErrorMessage()).toBeVisible({ timeout: 10000 });
+    expect(await home.loginModal.getErrorMessageText()).toContain('Пароль не указан');
   });
 });
