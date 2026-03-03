@@ -29,28 +29,23 @@ jobs:
       - run: npx tsc --noEmit
 
   e2e-tests:
-    name: Run Playwright Tests
+    name: Run Playwright Tests in Docker
     needs: lint-and-check
     runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.58.2-jammy
+      env:
+        BASE_URL: ${{ secrets.BASE_URL }}
+        LOGIN_EMAIL: ${{ secrets.LOGIN_EMAIL }}
+        LOGIN_PASSWORD: ${{ secrets.LOGIN_PASSWORD }}
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '24'
-          cache: 'npm'
 
       - name: Install dependencies
         run: npm ci
 
-      - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
-
-      - name: Run tests
-        env:
-          BASE_URL: ${{ secrets.BASE_URL }}
-          LOGIN_EMAIL: ${{ secrets.LOGIN_EMAIL }}
-          LOGIN_PASSWORD: ${{ secrets.LOGIN_PASSWORD }}
-        run: npx playwright test --reporter=line,html
+      - name: Run Playwright tests
+        run: npx playwright test --reporter=html
 
       - name: Upload HTML report
         uses: actions/upload-artifact@v4
