@@ -8,17 +8,13 @@ test.describe('Search tests', () => {
   
   test.beforeEach(async ({ page }) => {
     const { cookies } = await loginViaApi();
-    await page.context().addCookies(
-      cookies.map(cookie => ({
-        ...cookie,
-        domain: '.21vek.by'
-      }))
-    );
+    await page.context().addCookies(cookies.map(c => ({ ...c, domain: '.21vek.by' })));
 
     const home = new HomePage(page);
 
     await home.goto(config.baseURL);
-    await home.cookieModal.reject();
+    await home.cookieModal1.reject();
+    await home.cookieModal2.reject();
   });
 
   test('T1 [Search] Search input is visible', { tag: ['@regression', '@P2'] }, async ({ page }) => {

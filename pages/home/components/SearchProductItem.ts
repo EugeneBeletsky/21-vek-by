@@ -70,4 +70,8 @@ export class SearchProductItem extends BaseComponent {
     }));
     return info;
   }
+
+  async addToCart(index: number): Promise<void> {
+    await this.addToCartButton.nth(index).click();
+  }
 }
