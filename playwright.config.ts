@@ -13,16 +13,12 @@ export default defineConfig({
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 2 : undefined,
   reporter: process.env.CI
-    ? [
-        ['line'],
-        ['html', { outputFolder: 'playwright-report', open: 'never' }],
-        ['allure-playwright']
-      ]
+    ? [        
+      ['html', { outputFolder: 'playwright-report', open: 'never' }]
+    ]
     : [
-        ['list'],
-        ['html'],
-        ['allure-playwright']
-      ],
+      ['html']
+    ],
   use: {
     baseURL: process.env.BASE_URL || 'https://www.21vek.by',
     actionTimeout: 15000,
@@ -37,11 +33,11 @@ export default defineConfig({
   projects: [
     {
       name: 'setup',
-      testMatch: /.*\.ts/,
+      testMatch: /tests\/.*\.setup\.ts/,
     },
     {
       name: 'chromium',
-      testIgnore: ['tests/auth/**'],
+      testIgnore: ['tests/api/**'],
       use: { ...devices['Desktop Chrome'] },
     },
     {
@@ -51,11 +47,11 @@ export default defineConfig({
         storageState: '.auth/user.json'
       },
       dependencies: ['setup'],
-      testMatch: ['tests/**/.+\.spec\.ts']
+      testMatch: ['tests/**/*.spec.ts']
     },
     {
       name: 'firefox',
-      testIgnore: ['tests/auth/**'],
+      testIgnore: ['tests/api/**'],
       use: { ...devices['Desktop Firefox'] },
     },
   ],
