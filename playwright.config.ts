@@ -26,7 +26,7 @@ export default defineConfig({
     screenshot: { mode: 'only-on-failure', fullPage: true },
     video: { mode: 'retain-on-failure', size: { width: 1366, height: 768 } },
     trace: 'on-first-retry',
-    viewport: { width: 1440, height: 900 },
+    viewport: { width: 1366, height: 768 },
     ignoreHTTPSErrors: true,
     bypassCSP: true,
   },
