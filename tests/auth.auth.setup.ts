@@ -1,7 +1,9 @@
-import { test as setup, expect } from '@playwright/test';
+/* eslint-disable no-console, no-undef */
+import { test , expect } from '@playwright/test';
 import { config } from '../utils/config';
 
-setup('authenticate and save storage state', async ({ page }) => {
+
+test('authenticate and save storage state', async ({ page }) => {
   await page.goto('/');
   await page.waitForLoadState('domcontentloaded');
 
@@ -11,13 +13,17 @@ setup('authenticate and save storage state', async ({ page }) => {
     if (await modal1.isVisible({ timeout: 3000 }).catch(() => false)) {
       await modal1.locator('button:has-text("Отклонить")').click({ timeout: 3000 }).catch(() => {});
     }
-  } catch {}
+  } catch (error) {
+    console.warn('Error closing cookie dialog 1:', error);
+  }
   try {
     const modal2 = page.getByTestId('modal');
     if (await modal2.isVisible({ timeout: 3000 }).catch(() => false)) {
       await modal2.locator('button:has-text("Отклонить")').click({ timeout: 3000 }).catch(() => {});
     }
-  } catch {}
+  } catch (error) {
+    console.warn('Error closing cookie dialog 2:', error);
+  }
 
   // Open login
   await page.getByTestId('userToolsDropDown').locator('button').first().click();
