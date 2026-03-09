@@ -1,10 +1,8 @@
 name: Playwright Tests with Lint
 
 on:
-  push:
-    branches: [main, master, refactor]
   pull_request:
-    branches: [main, master, refactor]
+    branches: [main]
   workflow_dispatch:
 
 env:
