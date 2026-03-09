@@ -3,7 +3,7 @@ import { Locator } from '@playwright/test';
 
 
 export class SearchProductItem extends BaseComponent {
-  private searchProductList = this.element.getByTestId('search-result-product-list');
+  private searchProductList = this.element;
   private productItem = this.searchProductList.locator('.style_product__xVGB6');
   private addToCartButton = this.productItem.getByRole('button', { name: 'Добавить в корзину' });
   private itemPriceBlock = this.productItem.getByTestId('card-price');
@@ -16,7 +16,7 @@ export class SearchProductItem extends BaseComponent {
   }
 
   async waitForSearchResult() {
-    await this.searchProductList.waitFor({ state: 'visible' });
+    await this.searchProductList.waitFor({ state: 'visible', timeout: 10000 });
   }
 
   async getAllItems(): Promise<Locator[]> {
@@ -55,17 +55,21 @@ export class SearchProductItem extends BaseComponent {
   }
     
   async getAllPrices(): Promise<number[]> {
-    let items = await this.getAllItems();
-    let prices = await Promise.all(items.map(async (item) => {
-      let priceText = await item.getByTestId('card-current-price').textContent();
+    const page = this.element.page();
+    const itemsWithPrice = this.productItem.filter({ has: page.getByTestId('card-current-price') });
+    const items = await itemsWithPrice.all();
+    const prices = await Promise.all(items.map(async (item) => {
+      const priceText = await item.getByTestId('card-current-price').textContent();
       return Number(priceText?.replace(/[^\d,]/g, '').replace(',', '.'));
     }));
     return prices;
   }
 
   async getAllInfo() {
-    let items = await this.getAllItems();
-    let info = await Promise.all(items.map(async (item) => {
+    const page = this.element.page();
+    const itemsWithInfo = this.productItem.filter({ has: page.getByTestId('card-info') });
+    const items = await itemsWithInfo.all();
+    const info = await Promise.all(items.map(async (item) => {
       return await item.getByTestId('card-info').textContent();
     }));
     return info;
