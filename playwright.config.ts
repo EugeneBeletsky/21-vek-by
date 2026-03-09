@@ -32,27 +32,9 @@ export default defineConfig({
   },
   projects: [
     {
-      name: 'setup',
-      testMatch: /tests\/.*\.setup\.ts/,
-    },
-    {
       name: 'chromium',
       testIgnore: ['tests/api/**'],
       use: { ...devices['Desktop Chrome'] },
-    },
-    {
-      name: 'chromium-auth',
-      use: {
-        ...devices['Desktop Chrome'],
-        storageState: '.auth/user.json'
-      },
-      dependencies: ['setup'],
-      testMatch: ['tests/**/*.spec.ts']
-    },
-    {
-      name: 'firefox',
-      testIgnore: ['tests/api/**'],
-      use: { ...devices['Desktop Firefox'] },
     },
   ],
   outputDir: 'test-results',

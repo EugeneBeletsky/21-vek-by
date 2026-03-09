@@ -41,5 +41,6 @@ export default class HomePage extends BasePage {
     await expect(await this.loginModal.getModal()).toBeVisible();
     await this.loginModal.login(email, password);
     await expect(await this.loginModal.getModal()).toBeHidden();
+    await this.loginModal.closeModal();
   }
 }

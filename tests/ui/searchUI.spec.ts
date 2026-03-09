@@ -25,7 +25,9 @@ test('T2 [search] Search for a product on the main page', { tag: ['@regression',
 });
 
 test('T3 [search] All products have a price more than 0', { tag: ['@regression', '@P2'] }, async ({ page }) => {
+  const home = new HomePage(page);
   const searchProductItem = new SearchProductItem(page.getByTestId('search-result-product-list'));
+  await home.header.search.searchItem('телевизор');
   await searchProductItem.waitForSearchResult();
   let prices = await searchProductItem.getAllPrices();
   for (let price of prices) {
@@ -34,7 +36,9 @@ test('T3 [search] All products have a price more than 0', { tag: ['@regression',
 });
 
 test('T4 [search] All products have a name', { tag: ['@regression', '@P2'] }, async ({ page }) => {
+  const home = new HomePage(page);
   const searchProductItem = new SearchProductItem(page.getByTestId('search-result-product-list'));
+  await home.header.search.searchItem('телевизор');
   await searchProductItem.waitForSearchResult();
   let info = await searchProductItem.getAllInfo();
   for (let item of info) {

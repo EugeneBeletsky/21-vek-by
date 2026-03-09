@@ -9,7 +9,7 @@ export default class LoginModal extends BaseComponent {
   private closeButton = this.element.getByTestId('modalClose');
   private errorMessage = this.element.locator('.ErrorMessage-module__message');
   private modalLoader = this.element.getByTestId('loader');
-  
+  private modalClose = this.element.getByTestId('modalClose');
 
   constructor(element: Locator) {
     super(element);
@@ -57,6 +57,12 @@ export default class LoginModal extends BaseComponent {
     let loader = this.modalLoader;
     if (await loader.isVisible()) {
       await loader.waitFor({ state: 'hidden' });
+    }
+  }
+
+  async closeModal() {
+    if (await this.modalClose.isVisible()) {
+      await this.modalClose.click();
     }
   }
 } 
