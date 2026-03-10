@@ -33,7 +33,6 @@ export default defineConfig({
   projects: [
     {
       name: 'chromium',
-      testIgnore: ['tests/api/**'],
       use: { ...devices['Desktop Chrome'] },
     },
   ],
