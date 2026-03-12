@@ -10,11 +10,12 @@ export default class Header extends BaseComponent {
     this.search = new Search(element);
   }
 
-  async getAccountModal() {
+  async getAccountModal(): Promise<Locator> {
     return this.userToolsToggler;
   }
 
   async openAccountMenu() {
+    await this.userToolsToggler.waitFor({ state: 'visible', timeout: 10000 });
     await this.userToolsToggler.click();
   }
   

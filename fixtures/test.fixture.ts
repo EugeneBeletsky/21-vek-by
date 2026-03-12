@@ -1,6 +1,7 @@
 import { test as base, expect, Cookie } from '@playwright/test';
 import HomePage from '../pages/home/HomePage';
 import { SearchProductList } from '../pages/home/components/SearchProductList';
+import { BasketItemList } from '../pages/home/components/BasketItemList';
 import { CartClient } from '../tests/api/cart/CartClient';
 import { createAuthenticatedAPIContext } from '../api/request';
 import { loginViaApi } from '../utils/login';
@@ -9,6 +10,7 @@ import { config } from '../utils/config';
 type TestFixtures = {
   homePage: HomePage;
   searchProducts: SearchProductList;
+  basketItems: BasketItemList;
   authenticatedHomePage: HomePage;
   emptyCart: void;
 };
@@ -31,6 +33,13 @@ export const test = base.extend<TestFixtures, WorkerFixtures>({
   searchProducts: async ({ page }, use) => {
     const list = new SearchProductList(
       page.getByTestId('search-result-product-list')
+    );
+    await use(list);
+  },
+
+  basketItems: async ({ page }, use) => {
+    const list = new BasketItemList(
+      page.getByTestId('basket-container')
     );
     await use(list);
   },
