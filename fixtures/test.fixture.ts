@@ -1,12 +1,12 @@
 import { test as base, expect } from '@playwright/test';
 import HomePage from '../pages/home/HomePage';
-import { SearchProductItem } from '../pages/home/components/SearchProductItem';
+import { SearchProductList } from '../pages/home/components/SearchProductList';
 import { loginViaApi } from '../utils/login';
 import { config } from '../utils/config';
 
 type TestFixtures = {
   homePage: HomePage;
-  searchProducts: SearchProductItem;
+  searchProducts: SearchProductList;
   authenticatedHomePage: HomePage;
 };
 
@@ -26,10 +26,10 @@ export const test = base.extend<TestFixtures, WorkerFixtures>({
   },
 
   searchProducts: async ({ page }, use) => {
-    const items = new SearchProductItem(
+    const list = new SearchProductList(
       page.getByTestId('search-result-product-list')
     );
-    await use(items);
+    await use(list);
   },
 
   authenticatedHomePage: async ({ page, authCookies }, use) => {
