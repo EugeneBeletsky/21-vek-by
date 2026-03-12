@@ -10,19 +10,26 @@ export default class CookieModal1 extends BaseComponent {
     super(element);
   }
 
-  async isVisible(): Promise<boolean> {
-    return this.modalBlock.isVisible({ timeout: 5000 });
+  async waitForModal(timeout = 5000): Promise<boolean> {
+    try {
+      await this.modalBlock.waitFor({ state: 'visible', timeout });
+      return true;
+    } catch {
+      return false;
+    }
   }
 
   async reject() {
-    if (await this.isVisible()) {
+    if (await this.waitForModal()) {
       await this.rejectButton.click();
+      await this.modalBlock.waitFor({ state: 'hidden' });
     }
   }
 
   async accept() {
-    if (await this.isVisible()) {
+    if (await this.waitForModal()) {
       await this.acceptButton.click();
+      await this.modalBlock.waitFor({ state: 'hidden' });
     }
   }
 }

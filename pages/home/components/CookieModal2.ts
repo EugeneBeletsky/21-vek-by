@@ -4,18 +4,32 @@ import { Locator } from '@playwright/test';
 export default class CookieModal2 extends BaseComponent {
   public modalBlock = this.element.locator('.ModalDesktop-module__modalContent');
   public rejectButton2 = this.element.locator('.Button-module__button.Button-module__gray-secondary');
+  public acceptButton = this.element.getByTestId('modal-confirmation-button');
 
   constructor(element: Locator) {
     super(element);
   }
 
-  async isVisible(): Promise<boolean> {
-    return this.modalBlock.isVisible({ timeout: 5000 });
+  async waitForModal(timeout = 5000): Promise<boolean> {
+    try {
+      await this.modalBlock.waitFor({ state: 'visible', timeout });
+      return true;
+    } catch {
+      return false;
+    }
   }
 
   async reject() {
-    if (await this.isVisible()) {
+    if (await this.waitForModal()) {
       await this.rejectButton2.click();
+      await this.modalBlock.waitFor({ state: 'hidden' });
+    }
+  }
+
+  async accept() {
+    if (await this.waitForModal()) {
+      await this.acceptButton.click();
+      await this.modalBlock.waitFor({ state: 'hidden' });
     }
   }
 }
