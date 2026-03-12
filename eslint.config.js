@@ -41,4 +41,10 @@ export default [
       ...playwright.configs.recommended.rules,
     },
   },
+  {
+    files: ['fixtures/**/*.ts'],
+    rules: {
+      'no-empty-pattern': 'off',
+    },
+  },
 ];

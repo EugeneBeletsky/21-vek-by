@@ -1,4 +1,3 @@
-// pages/components/ScrollToTopButtonComponent.ts
 import BaseComponent from '../../components/BaseComponent';
 
 export default class ScrollToTopButton extends BaseComponent {
