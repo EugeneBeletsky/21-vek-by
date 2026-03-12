@@ -34,19 +34,5 @@ export class Item extends BaseComponent {
     let info = await this.itemInfo.allTextContents();
     return info;
   }
-    
-  // async getAllPrices(): Promise<number[]> {
-  //   let prices = await Promise.all(this.element.locator(this.itemPriceFinal).all().map(async (item) => {
-  //     let priceText = await item.textContent();
-  //     return Number(priceText?.replace(/[^\d,]/g, '').replace(',', '.'));
-  //   }));
-  //   return prices;
-  // }
-
-  // async getAllInfo() {
-  //   let info = await Promise.all(this.element.locator(this.itemInfo).all().map(async (item) => {
-  //     return await item.textContent();
-  //   }));
-  //   return info;
-  // }
+  
 }
