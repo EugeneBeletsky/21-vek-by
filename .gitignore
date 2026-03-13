@@ -1,12 +1,18 @@
+# Dependencies
+node_modules/
 
 # Playwright
-node_modules/
 /test-results/
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+
+# Allure
 /allure-results/
-/test-results/
 /allure-report/
-/allure-results/
+
+# Auth
+/.auth/
+
+# Environment
 .env
