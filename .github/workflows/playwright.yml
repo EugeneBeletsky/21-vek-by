@@ -46,6 +46,13 @@ jobs:
         run: npx playwright test --project=chromium
         continue-on-error: true
 
+      - name: Install Java for Allure
+        if: always()
+        run: |
+          apt-get update
+          apt-get install -y default-jre-headless
+          java -version
+
       - name: Generate Allure report
         if: always()
         run: npx allure generate allure-results --clean -o allure-report
