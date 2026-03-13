@@ -13,11 +13,13 @@ export default defineConfig({
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 2 : undefined,
   reporter: process.env.CI
-    ? [        
-      ['html', { outputFolder: 'playwright-report', open: 'never' }]
+    ? [
+      ['html', { outputFolder: 'playwright-report', open: 'never' }],
+      ['allure-playwright', { outputFolder: 'allure-results' }],
     ]
     : [
-      ['html']
+      ['html'],
+      ['allure-playwright', { outputFolder: 'allure-results' }],
     ],
   use: {
     baseURL: process.env.BASE_URL || 'https://www.21vek.by',
