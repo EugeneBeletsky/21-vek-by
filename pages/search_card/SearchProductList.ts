@@ -1,4 +1,4 @@
-import BaseComponent from '../../components/BaseComponent';
+import BaseComponent from '../components/BaseComponent';
 import { ProductCard } from './ProductCard';
 import { Locator } from '@playwright/test';
 

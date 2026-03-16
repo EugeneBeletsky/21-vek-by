@@ -61,6 +61,8 @@ test('T3 [Purchase] Check order details', { tag: ['@regression', '@P2'] }, async
   let counter = await basketItem.getCounter();
   //Check counter
   expect(counter).toBe('1');
+  //Check price is more than 0
+  expect(price).toBeGreaterThan(0);
   //Check that price is less than old price
   expect(price).toBeLessThan(oldPrice);
   //Check that price is equal to old price minus discount
