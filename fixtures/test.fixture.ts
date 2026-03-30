@@ -2,7 +2,7 @@ import { test as base, expect, Cookie } from '@playwright/test';
 import HomePage from '../pages/home/HomePage';
 import { SearchProductList } from '../pages/search_card/SearchProductList';
 import { BasketItemList } from '../pages/basket_card/BasketItemList';
-import { CartClient } from '../tests/api/cart/CartClient';
+import { CartClient } from '../tests/api/cart/cartClient';
 import { createAuthenticatedAPIContext } from '../api/request';
 import { loginViaApi } from '../utils/login';
 import { config } from '../utils/config';
