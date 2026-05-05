@@ -61,7 +61,7 @@ test.describe('[Login tests]', () => {
     },
     {
       title: 'T9 [Login] email is a XSS attack',
-      user: { email: `<script>alert('pwned')</script>`, password: validPassword },
+      user: { email: '<script>alert(\'pwned\')</script>', password: validPassword },
       expect: { errorContains: 'Неправильный формат электронной почты' },
     },
   ];
