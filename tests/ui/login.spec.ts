@@ -79,7 +79,7 @@ test.describe('[Login tests]', () => {
       }
 
       await expect(await homePage.loginModal.getErrorMessage()).toBeVisible({ timeout: 10000 });
-      expect.soft(await homePage.loginModal.getErrorMessageText()).toContain(testCase.expect.errorContains);
+      expect(await homePage.loginModal.getErrorMessageText()).toContain(testCase.expect.errorContains);
     });
   }
 });
