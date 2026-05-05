@@ -1,15 +1,19 @@
 name: Playwright Tests with Lint
 
 on:
-  pull_request:
+  push:
     branches: [main]
   workflow_dispatch:
+
 
 env:
   BASE_URL: ${{ secrets.BASE_URL }}
   LOGIN_EMAIL: ${{ secrets.LOGIN_EMAIL }}
   LOGIN_PASSWORD: ${{ secrets.LOGIN_PASSWORD }}
   NAME: ${{ secrets.NAME }}
+
+permissions:
+  contents: write
 
 jobs:
   lint-and-check:
@@ -31,7 +35,7 @@ jobs:
     needs: lint-and-check
     runs-on: ubuntu-latest
     container:
-      image: mcr.microsoft.com/playwright:v1.58.2-jammy
+      image: mcr.microsoft.com/playwright:v1.59.1-jammy
       env:
         BASE_URL: ${{ secrets.BASE_URL }}
         LOGIN_EMAIL: ${{ secrets.LOGIN_EMAIL }}
@@ -43,6 +47,7 @@ jobs:
         run: npm ci
 
       - name: Run Playwright tests
+        id: playwright
         run: npx playwright test --project=chromium
         continue-on-error: true
 
@@ -80,3 +85,43 @@ jobs:
           name: playwright-report
           path: playwright-report/
           retention-days: 30
+
+      - name: Fail job if tests failed
+        if: always() && steps.playwright.outcome == 'failure'
+        run: exit 1
+
+  deploy-allure:
+    name: Deploy Allure Report to GitHub Pages
+    runs-on: ubuntu-latest
+    needs: [e2e-tests]
+    if: always() && github.ref == 'refs/heads/main'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Checkout gh-pages for history
+        uses: actions/checkout@v4
+        continue-on-error: true
+        with:
+          ref: gh-pages
+          path: gh-pages-temp
+
+      - name: Download Allure report
+        uses: actions/download-artifact@v4
+        with:
+          name: allure-report
+          path: allure-report
+
+      - name: Save history for trend
+        run: |
+          mkdir -p allure-report/history
+          if [ -d "gh-pages-temp/history" ]; then
+            cp -r gh-pages-temp/history/* allure-report/history/
+          fi
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./allure-report
+          publish_branch: gh-pages
