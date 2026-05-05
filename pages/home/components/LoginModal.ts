@@ -1,5 +1,11 @@
 import BaseComponent from '../../components/BaseComponent';
 import { Locator } from '@playwright/test';
+import { faker } from '@faker-js/faker';
+
+export interface User {
+  email?: string | undefined | null | boolean | number | object;
+  password?: string | undefined | null | boolean | number | object;
+}
 
 export default class LoginModal extends BaseComponent {
   private modalContainer = this.element.locator('.LoginForm_container__6zfxM');
@@ -35,11 +41,26 @@ export default class LoginModal extends BaseComponent {
     await this.submitButton.click();
   }
 
-  async login(email: string, password: string) {
-    await this.fillEmail(email);
-    await this.fillPassword(password);
+  async login(user: User) {
+    await this.fillEmail(user.email as string);
+    await this.fillPassword(user.password as string);
     await this.submit();
     await this.waitForLoaderDisappear();
+  }
+
+  async generateRandomUser(): Promise<User> {
+    return {
+      email: faker.internet.email(),
+      password: faker.internet.password(),
+    };
+  }
+
+  async generateRandomEmail(): Promise<string> {
+    return faker.internet.email();
+  }
+
+  async generateRandomPassword(): Promise<string> {
+    return faker.internet.password();
   }
 
   async close() {

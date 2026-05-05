@@ -31,5 +31,6 @@ test('T4 [search] All products have a name', { tag: ['@regression', '@P2'] }, as
   const names = await searchResultsPage.products.getAllInfo();
   for (const name of names) {
     expect(name).not.toBeNull();
+    expect(name).toContain('Телевизор');
   }
 });
