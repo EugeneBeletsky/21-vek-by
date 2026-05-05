@@ -27,7 +27,7 @@ export default defineConfig({
     navigationTimeout: 45000,
     screenshot: { mode: 'only-on-failure', fullPage: true },
     video: { mode: 'retain-on-failure', size: { width: 1366, height: 768 } },
-    trace: 'on-first-retry',
+    trace: 'on',
     viewport: { width: 1366, height: 768 },
     ignoreHTTPSErrors: true,
     bypassCSP: true,

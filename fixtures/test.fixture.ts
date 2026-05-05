@@ -1,7 +1,7 @@
 import { test as base, expect, Cookie } from '@playwright/test';
 import HomePage from '../pages/home/HomePage';
-import { SearchProductList } from '../pages/search_card/SearchProductList';
-import { BasketItemList } from '../pages/basket_card/BasketItemList';
+import { SearchResultsPage } from '../pages/search/SearchResultsPage';
+import { OrderPage } from '../pages/order/OrderPage';
 import { CartClient } from '../tests/api/cart/cartClient';
 import { createAuthenticatedAPIContext } from '../api/request';
 import { loginViaApi } from '../utils/login';
@@ -9,8 +9,8 @@ import { config } from '../utils/config';
 
 type TestFixtures = {
   homePage: HomePage;
-  searchProducts: SearchProductList;
-  basketItems: BasketItemList;
+  searchResultsPage: SearchResultsPage;
+  orderPage: OrderPage;
   authenticatedHomePage: HomePage;
   emptyCart: void;
 };
@@ -22,7 +22,8 @@ type WorkerFixtures = {
 export const test = base.extend<TestFixtures, WorkerFixtures>({
   authCookies: [async ({}, use) => {
     const { cookies } = await loginViaApi();
-    await use(cookies.map(c => ({ ...c, domain: '.21vek.by' })));
+    // Keep original cookie domains for API calls to gate.21vek.by.
+    await use(cookies);
   }, { scope: 'worker' }],
 
   homePage: async ({ page }, use) => {
@@ -30,22 +31,17 @@ export const test = base.extend<TestFixtures, WorkerFixtures>({
     await use(home);
   },
 
-  searchProducts: async ({ page }, use) => {
-    const list = new SearchProductList(
-      page.getByTestId('search-result-product-list')
-    );
-    await use(list);
+  searchResultsPage: async ({ page }, use) => {
+    await use(new SearchResultsPage(page));
   },
 
-  basketItems: async ({ page }, use) => {
-    const list = new BasketItemList(
-      page.getByTestId('basket-container')
-    );
-    await use(list);
+  orderPage: async ({ page }, use) => {
+    await use(new OrderPage(page));
   },
 
   authenticatedHomePage: async ({ page, authCookies }, use) => {
-    await page.context().addCookies(authCookies);
+    // Remap cookie domain for UI site (www.21vek.by) before injecting into browser context.
+    await page.context().addCookies(authCookies.map(c => ({ ...c, domain: '.21vek.by' })));
     const home = new HomePage(page);
     await home.goto(config.baseURL);
     await home.cookieModal1.reject();
