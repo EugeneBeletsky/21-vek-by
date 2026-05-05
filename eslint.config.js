@@ -4,6 +4,18 @@ import tsparser from '@typescript-eslint/parser';
 import playwright from 'eslint-plugin-playwright';
 
 export default [
+  {
+    ignores: [
+      'node_modules',
+      'dist',
+      'allure-results',
+      'allure-report',
+      'playwright-report',
+      'test-results',
+      'playwright.config.ts',
+      'config.ts'
+    ]
+  },
   js.configs.recommended,
   {
     files: ['**/*.ts', '**/*.tsx', '**/*.js'],

@@ -1,5 +1,3 @@
-/* eslint-env node */
-
 import { defineConfig, devices } from '@playwright/test';
 import * as dotenv from 'dotenv';
 
