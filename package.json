@@ -43,12 +43,15 @@
     "typescript": "^6.0.3"
   },
   "devDependencies": {
+    "eslint": "^10.3.0",
+    "@eslint/js": "^10.0.1",
+    "eslint-plugin-playwright": "^2.10.2",
+    "typescript-eslint": "^8.58.1",
     "@typescript-eslint/eslint-plugin": "^8.59.2",
+    "eslint-config-prettier": "^10.1.8",
     "@typescript-eslint/parser": "^8.59.2",
     "allure-commandline": "^2.38.1",
     "allure-playwright": "^3.7.2",
-    "eslint": "^10.3.0",
-    "eslint-plugin-playwright": "^2.10.2",
     "npm": "^11.13.0",
     "prettier": "^3.8.3",
     "@faker-js/faker": "^10.4.0"
