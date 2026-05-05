@@ -29,7 +29,6 @@ End-to-end UI and API test automation framework for [21vek.by](https://www.21vek
 | [Prettier](https://prettier.io/) | Code formatting |
 | [Docker](https://www.docker.com/) | Containerized test execution |
 | [GitHub Actions](https://github.com/features/actions) | CI pipeline |
-| [Jenkins](https://www.jenkins.io/) | CI/CD pipeline |
 
 ---
 
@@ -51,7 +50,6 @@ End-to-end UI and API test automation framework for [21vek.by](https://www.21vek
 │   └── ui/                   # UI tests (login, logout, purchase, search)
 ├── utils/                    # Utilities (config, login, session)
 ├── Dockerfile                # Docker image for headless execution
-├── Jenkinsfile               # Jenkins pipeline definition
 ├── playwright.config.ts      # Playwright configuration
 └── package.json
 ```
@@ -173,31 +171,24 @@ Allure results are written to `allure-results/` and the generated report goes to
 docker build -t 21vek-tests .
 ```
 
-### Run Tests in Container
+### Run Tests in Container (PowerShell)
 
 ```bash
-docker run --rm \
-  -e BASE_URL=https://www.21vek.by \
-  -e LOGIN_EMAIL=your_email \
-  -e LOGIN_PASSWORD=your_password \
+docker run --rm `
+  -e BASE_URL=https://21vek.by `
+  -e LOGIN_EMAIL=your_email `
+  -e LOGIN_PASSWORD=your_password `
+  -v "${PWD}/allure-results:/app/allure-results" `
+  -v "${PWD}/playwright-report:/app/playwright-report" `
   21vek-tests
-```
+  ```
 
-### Extract Reports from Container
-
-```bash
-# Run tests and keep the container
-docker run --name test-run 21vek-tests
-
-# Copy reports to host
-docker cp test-run:/app/allure-results ./allure-results
-docker cp test-run:/app/playwright-report ./playwright-report
+### Generate Allure Report
 
 # Generate Allure report locally
-npm run report:allure:generate
 
-# Cleanup
-docker rm test-run
+```bash
+npm run report:allure:generate
 ```
 
 ---
@@ -214,22 +205,3 @@ The workflow (`.github/workflows/playwright.yml`) runs on every pull request to 
 3. **Reports** -- Uploads Allure results, Allure report, and Playwright HTML report as artifacts
 
 Required repository secrets: `BASE_URL`, `LOGIN_EMAIL`, `LOGIN_PASSWORD`, `NAME`.
-
-### Jenkins
-
-The `Jenkinsfile` defines a declarative pipeline with the following stages:
-
-1. **Checkout** -- Pulls source code
-2. **Install** -- Installs npm dependencies and Playwright browsers
-3. **Test** -- Runs the full Playwright test suite
-4. **Generate Allure Report** -- Generates the Allure report from results
-
-The pipeline integrates with the [Allure Jenkins Plugin](https://plugins.jenkins.io/allure-jenkins-plugin/) for in-dashboard report viewing.
-
-Required Jenkins credentials: `BASE_URL`, `LOGIN_EMAIL`, `LOGIN_PASSWORD`.
-
----
-
-## License
-
-ISC
