@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/playwright:v1.58.2-jammy
+FROM mcr.microsoft.com/playwright:v1.59.1-jammy
 
 RUN apt-get update && \
     apt-get install -y default-jre && \
@@ -13,6 +13,5 @@ RUN npm ci
 
 COPY . .
 
-RUN npx playwright install --with-deps
 
 CMD ["npx", "playwright", "test"]

@@ -1,4 +1,4 @@
-import BaseComponent from '../components/BaseComponent';
+import BaseComponent from '../../components/BaseComponent';
 import { ProductCard } from './ProductCard';
 import { Locator } from '@playwright/test';
 
@@ -36,9 +36,7 @@ export class SearchProductList extends BaseComponent {
       has: page.getByTestId('card-current-price'),
     });
     const items = await withPrice.all();
-    return Promise.all(
-      items.map(item => new ProductCard(item).getPrice())
-    );
+    return Promise.all(items.map(item => new ProductCard(item).getPrice()));
   }
 
   async getAllInfo(): Promise<(string | null)[]> {
@@ -47,8 +45,7 @@ export class SearchProductList extends BaseComponent {
       has: page.getByTestId('card-info'),
     });
     const items = await withInfo.all();
-    return Promise.all(
-      items.map(item => new ProductCard(item).getInfo())
-    );
+    return Promise.all(items.map(item => new ProductCard(item).getInfo()));
   }
 }
+

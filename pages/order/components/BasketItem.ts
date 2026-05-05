@@ -1,4 +1,4 @@
-import BaseComponent from '../components/BaseComponent';
+import BaseComponent from '../../components/BaseComponent';
 import { Locator } from '@playwright/test';
 
 export class BasketItem extends BaseComponent {
@@ -55,3 +55,4 @@ export class BasketItem extends BaseComponent {
     await this.addToFavorites2.click();
   }
 }
+

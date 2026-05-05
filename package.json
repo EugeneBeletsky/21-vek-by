@@ -36,20 +36,21 @@
   },
   "homepage": "https://github.com/EugeneBeletsky/21-vek-by#readme",
   "dependencies": {
-    "@playwright/test": "^1.58.2",
-    "@types/node": "^22.15.21",
-    "dayjs": "^1.11.13",
-    "dotenv": "^16.5.0",
-    "typescript": "^5.8.3"
+    "@playwright/test": "^1.59.1",
+    "@types/node": "^25.6.0",
+    "dayjs": "^1.11.20",
+    "dotenv": "^17.4.2",
+    "typescript": "^6.0.3"
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^8.32.1",
-    "@typescript-eslint/parser": "^8.32.1",
-    "allure-commandline": "^2.37.0",
-    "allure-playwright": "^3.6.0",
-    "eslint": "^9.27.0",
-    "eslint-plugin-playwright": "^2.2.0",
-    "npm": "^11.4.1",
-    "prettier": "^3.5.3"
+    "@typescript-eslint/eslint-plugin": "^8.59.2",
+    "@typescript-eslint/parser": "^8.59.2",
+    "allure-commandline": "^2.38.1",
+    "allure-playwright": "^3.7.2",
+    "eslint": "^10.3.0",
+    "eslint-plugin-playwright": "^2.10.2",
+    "npm": "^11.13.0",
+    "prettier": "^3.8.3",
+    "@faker-js/faker": "^10.4.0"
   }
 }

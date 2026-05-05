@@ -1,4 +1,4 @@
-import BaseComponent from '../components/BaseComponent';
+import BaseComponent from '../../components/BaseComponent';
 import { BasketItem } from './BasketItem';
 import { Locator } from '@playwright/test';
 
@@ -30,3 +30,4 @@ export class BasketItemList extends BaseComponent {
     return items.map(locator => new BasketItem(locator));
   }
 }
+
