@@ -37,6 +37,5 @@ export default defineConfig({
     },
   ],
   outputDir: 'test-results',
-  testMatch: /.*\.spec\.ts/,
-  preserveOutput: 'failures-only',
+  testMatch: /.*\.spec\.ts/
 });
