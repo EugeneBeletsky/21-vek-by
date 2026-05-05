@@ -7,6 +7,7 @@ import CookieModal1 from './components/CookieModal1';
 import CookieModal2 from './components/CookieModal2';
 import AccountModal from './components/AccountModal';
 import { config } from '../../utils/config';
+import { User } from './components/LoginModal';
 
 export default class HomePage extends BasePage {
   private mainLogoButton = this.page.locator('div.logotype');
@@ -31,7 +32,7 @@ export default class HomePage extends BasePage {
     await this.mainLogoButton.click();
   }
 
-  async loginViaUI(email = config.credentials.valid.email, password = config.credentials.valid.password) {
+  async loginViaUI(user:User) {
     await this.goto(config.baseURL);
     await this.page.waitForLoadState('domcontentloaded');
     await this.cookieModal1.reject();
@@ -39,7 +40,10 @@ export default class HomePage extends BasePage {
     await this.header.openAccountMenu();
     await this.accountModal.clickLoginButton();
     await expect(await this.loginModal.getModal()).toBeVisible();
-    await this.loginModal.login(email, password);
+    await this.loginModal.login({ 
+      email: config.credentials.valid.email, 
+      password: config.credentials.valid.password 
+    });
     await expect(await this.loginModal.getModal()).toBeHidden();
     await this.loginModal.closeModal();
   }
