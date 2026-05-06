@@ -1,8 +1,8 @@
 import { test, expect } from '../../fixtures/test.fixture';
 
 test('T1 [search] Search input is visible', { tag: ['@regression', '@P1'] }, async ({ authenticatedHomePage }) => {
-  const input = await authenticatedHomePage.header.search.getInput();
-  await expect(input).toBeVisible();
+  await authenticatedHomePage.header.search.expectVisible();
+
 });
 
 test('T2 [search] Search for a product on the main page', { tag: ['@regression', '@P2'] }, async ({ authenticatedHomePage, searchResultsPage }) => {

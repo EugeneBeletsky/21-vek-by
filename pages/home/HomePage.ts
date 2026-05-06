@@ -1,4 +1,4 @@
-import { Page, expect } from '@playwright/test';
+import { Page } from '@playwright/test';
 import BasePage from '../../pages/BasePage';
 import Header from './components/Header';
 import ScrollToTopButton from './components/ScrollToTopButton';
@@ -7,10 +7,11 @@ import CookieModal1 from './components/CookieModal1';
 import CookieModal2 from './components/CookieModal2';
 import AccountModal from './components/AccountModal';
 import { config } from '../../utils/config';
-import { User } from './components/LoginModal';
+import { User } from '../../types/User';
 
 export default class HomePage extends BasePage {
-  private mainLogoButton = this.page.locator('div.logotype');
+  private readonly mainLogo = this.page.locator('div.logotype');
+
   public readonly scrollToTop: ScrollToTopButton;
   public readonly header: Header;
   public readonly loginModal: LoginModal;
@@ -28,23 +29,31 @@ export default class HomePage extends BasePage {
     this.accountModal = new AccountModal(page.getByTestId('userToolsDropDown'));
   }
 
-  async clickMainLogoButton() {
-    await this.mainLogoButton.click();
+  async open(): Promise<void> {
+    await this.goto(config.baseURL);
   }
 
-  async loginViaUI(user:User) {
-    await this.goto(config.baseURL);
-    await this.page.waitForLoadState('domcontentloaded');
+  async dismissCookies(): Promise<void> {
     await this.cookieModal1.reject();
     await this.cookieModal2.reject();
+  }
+
+  async clickLogo(): Promise<void> {
+    await this.mainLogo.click();
+  }
+
+  /**
+   * Full UI login flow from home page.
+   * Uses provided user credentials — does NOT fall back to config internally.
+   */
+  async loginViaUI(user: User): Promise<void> {
+    await this.open();
+    await this.dismissCookies();
     await this.header.openAccountMenu();
-    await this.accountModal.clickLoginButton();
-    await expect(await this.loginModal.getModal()).toBeVisible();
-    await this.loginModal.login({ 
-      email: config.credentials.valid.email, 
-      password: config.credentials.valid.password 
-    });
-    await expect(await this.loginModal.getModal()).toBeHidden();
-    await this.loginModal.closeModal();
+    await this.accountModal.clickLogin();
+    await this.loginModal.expectVisible();
+    await this.loginModal.login(user);
+    await this.loginModal.expectHidden();
+    await this.loginModal.close();
   }
 }

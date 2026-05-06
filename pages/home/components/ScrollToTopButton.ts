@@ -1,18 +1,22 @@
 import BaseComponent from '../../components/BaseComponent';
+import { expect } from '@playwright/test';
 
 export default class ScrollToTopButton extends BaseComponent {
-  private buttonSelector = this.element.locator('button.style_upButton__MUSza');
-  private labelSelector = this.element.locator('.style_upButtonLabel__LPAA4');
+  private readonly label = this.element.locator('.style_upButtonLabel__LPAA4');
 
-  async isVisible(): Promise<boolean> {
-    return this.buttonSelector.isVisible();
+  async click(): Promise<void> {
+    await this.element.click();
   }
 
-  async click() {
-    await this.buttonSelector.click();
+  async getLabelText(): Promise<string | null> {
+    return this.label.textContent();
   }
 
-  async getLabel(): Promise<string | null> {
-    return this.labelSelector.textContent();
+  async expectVisible(): Promise<void> {
+    await expect(this.element).toBeVisible();
+  }
+
+  async expectHidden(): Promise<void> {
+    await expect(this.element).toBeHidden();
   }
 }

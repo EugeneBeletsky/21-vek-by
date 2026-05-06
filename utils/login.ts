@@ -10,8 +10,8 @@ export async function loginViaApi() {
       accept: 'application/json'
     },
     data: {
-      email: config.credentials.valid.email,
-      password: config.credentials.valid.password,
+      email: config.credentials.email,
+      password: config.credentials.password,
     },
   });
 

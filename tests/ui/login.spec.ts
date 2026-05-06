@@ -1,11 +1,11 @@
 import { test, expect } from '../../fixtures/test.fixture';
 import { config } from '../../utils/config';
-import { User } from '../../pages/home/components/LoginModal';
+import { User } from '../../types/User';
 import { faker } from '@faker-js/faker';
 
 
-const validEmail = config.credentials.valid.email;
-const validPassword = config.credentials.valid.password;
+const validEmail = config.credentials.email;
+const validPassword = config.credentials.password;
 
 test.beforeEach(async ({ homePage }) => {
   await homePage.goto(config.baseURL);
@@ -27,7 +27,7 @@ test.describe('[Login tests]', () => {
     {
       title: 'T2 [Login] should show error on wrong password',
       user: { email: validEmail, password: faker.internet.password() },
-      expect: { errorContains: 'Неправильный пароль' },
+      expect: { errorContains: 'Неправильный пароль. Сбросить пароль?' },
     },
     {
       title: 'T3 [Login] should show error on wrong email',
@@ -69,17 +69,16 @@ test.describe('[Login tests]', () => {
   for (const testCase of loginCases) {
     test(testCase.title, { tag: ['@regression', '@P1'] }, async ({ homePage }) => {
       await homePage.header.openAccountMenu();
-      await homePage.accountModal.clickLoginButton();
-      await expect(await homePage.loginModal.getModal()).toBeVisible();
+      await homePage.accountModal.clickLogin();
+      await homePage.loginModal.expectVisible();
       await homePage.loginModal.login(testCase.user);
 
       if (testCase.expect === 'success') {
-        await expect(await homePage.loginModal.getModal()).toBeHidden();
+        await homePage.loginModal.expectHidden();
         return;
       }
 
-      await expect(await homePage.loginModal.getErrorMessage()).toBeVisible({ timeout: 10000 });
-      expect(await homePage.loginModal.getErrorMessageText()).toContain(testCase.expect.errorContains);
+      await homePage.loginModal.expectErrorMessage(testCase.expect.errorContains);
     });
   }
 });

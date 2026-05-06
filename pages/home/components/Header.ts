@@ -1,67 +1,55 @@
 import BaseComponent from '../../components/BaseComponent';
-import { Locator } from '@playwright/test';
+import { Locator, expect } from '@playwright/test';
 
 export default class Header extends BaseComponent {
-  public userToolsToggler = this.element.locator('button.styles_userToolsToggler__c2aHe');
-  readonly search: Search;
+  private readonly accountToggler = this.element.locator('button.styles_userToolsToggler__c2aHe');
+  public readonly search: Search;
 
   constructor(element: Locator) {
     super(element);
     this.search = new Search(element);
   }
 
-  async getAccountModal(): Promise<Locator> {
-    return this.userToolsToggler;
+  async openAccountMenu(): Promise<void> {
+    await this.accountToggler.waitFor({ state: 'visible', timeout: 10_000 });
+    await this.accountToggler.click();
   }
 
-  async openAccountMenu() {
-    await this.userToolsToggler.waitFor({ state: 'visible', timeout: 10000 });
-    await this.userToolsToggler.click();
+  async expectVisible(): Promise<void> {
+    await expect(this.element).toBeVisible();
   }
-  
 }
 
 export class Search extends BaseComponent {
-  private searchInput = this.element.locator('input#catalogSearch');
-  private searchButton = this.element.locator('button.Search_searchBtn__Tk7Gw');
-  private searchResults = this.element.locator('.SearchSuggestList_listContainer__v7wVv');
+  private readonly searchInput = this.element.locator('input#catalogSearch');
+  private readonly searchButton = this.element.locator('button.Search_searchBtn__Tk7Gw');
+  private readonly suggestList = this.element.locator('.SearchSuggestList_listContainer__v7wVv');
 
   constructor(element: Locator) {
     super(element);
   }
 
-  async typeSearch(query: string) {
+  async searchItem(query: string): Promise<void> {
     await this.searchInput.fill(query);
-  }
-
-  async clickSearch() {
+    await this.searchInput.click();
     await this.searchButton.waitFor({ state: 'visible' });
     await this.searchButton.click();
   }
 
-  async searchItem(item: string) {
-    await this.typeSearch(item);
-    await this.searchInput.click();
-    await this.clickSearch();
+  /**
+   * Types query, waits for suggest list, then clicks the exact match.
+   * Throws if no matching suggestion is found.
+   */
+  async searchByExactSuggestion(query: string): Promise<void> {
+    await this.searchInput.fill(query);
+    await this.suggestList.waitFor({ state: 'visible' });
+
+    const suggestions = this.suggestList.locator('li');
+    const match = suggestions.filter({ hasText: query }).first();
+    await match.click();
   }
 
-  async searchByList(item: string) {
-    await this.typeSearch(item);
-    let searchResults = await this.getSearchResults();
-    for (let result of searchResults) {
-      if (await result.textContent() === item) {
-        await result.click();
-        break;
-      }
-    }
+  async expectSuggestVisible(): Promise<void> {
+    await expect(this.suggestList).toBeVisible();
   }
-
-  async getInput(): Promise<Locator> {
-    return this.searchInput;
-  }
-
-  async getSearchResults(): Promise<Locator[]> {
-    return this.searchResults.all();
-  }
-  
 }
