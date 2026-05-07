@@ -1,10 +1,14 @@
-import { test, expect } from '../../fixtures/test.fixture';
+import { test } from '../../fixtures/test.fixture';
 
-test.describe('[Logout tests]', () => {
-  test('T1 [Logout] User should logout successfully', { tag: ['@regression', '@P2'] }, async ({ authenticatedHomePage }) => {
-    await authenticatedHomePage.header.openAccountMenu();
-    await authenticatedHomePage.accountModal.clickLogout();
-    await authenticatedHomePage.header.openAccountMenu();
-    await authenticatedHomePage.accountModal.expectLoginButtonVisible();
-  });
+test.describe('[Logout]', () => {
+  test(
+    'T1 [Logout] authenticated user can log out successfully',
+    { tag: ['@regression', '@P2'] },
+    async ({ authHomePage }) => {
+      await authHomePage.header.openAccountMenu();
+      await authHomePage.accountModal.clickLogout();
+      await authHomePage.header.openAccountMenu();
+      await authHomePage.accountModal.expectLoginButtonVisible();
+    },
+  );
 });

@@ -1,8 +1,8 @@
 import { test, expect } from '../../../fixtures/api.fixture';
 
 test.describe('API: [Catalog]', () => {
-  test('T1 [Catalog] Check catalog big category length', { tag: ['@api', '@regression', '@P1'] }, async ({ authenticatedCatalog }) => {
-    const response = await authenticatedCatalog.getCatalog();
+  test('T1 [Catalog] Check catalog big category length', { tag: ['@api', '@regression', '@P1'] }, async ({ authCatalog }) => {
+    const response = await authCatalog.getCatalog();
     expect(response.ok()).toBeTruthy();
     expect(response.status()).toBe(200);
     expect(response.statusText()).toBe('OK');
@@ -10,8 +10,8 @@ test.describe('API: [Catalog]', () => {
     expect(responseJSON).toHaveLength(25);
   });
 
-  test('T2 [Catalog] Each category have 5 obligatory property', { tag: ['@api', '@regression', '@P1'] }, async ({ authenticatedCatalog }) => {
-    const response = await authenticatedCatalog.getCatalog();
+  test('T2 [Catalog] Each category have 5 obligatory property', { tag: ['@api', '@regression', '@P1'] }, async ({ authCatalog }) => {
+    const response = await authCatalog.getCatalog();
     expect(response.ok()).toBeTruthy();
     expect(response.status()).toBe(200);
     expect(response.statusText()).toBe('OK');
@@ -23,8 +23,8 @@ test.describe('API: [Catalog]', () => {
     expect(responseJSON[0]).toHaveProperty('children');
   });
 
-  test('T3 [Catalog] Check first category', { tag: ['@api', '@regression', '@P1'] }, async ({ authenticatedCatalog }) => {
-    const response = await authenticatedCatalog.getCatalog();
+  test('T3 [Catalog] Check first category', { tag: ['@api', '@regression', '@P1'] }, async ({ authCatalog }) => {
+    const response = await authCatalog.getCatalog();
     expect(response.ok()).toBeTruthy();
     expect(response.status()).toBe(200);
     expect(response.statusText()).toBe('OK');

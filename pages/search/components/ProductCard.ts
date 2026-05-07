@@ -1,29 +1,44 @@
 import BaseComponent from '../../components/BaseComponent';
-import { Locator } from '@playwright/test';
+import { Locator, expect } from '@playwright/test';
+import { parsePrice } from '../../../utils/parsePrice';
 
 export class ProductCard extends BaseComponent {
-  readonly price = this.element.getByTestId('card-current-price');
-  readonly oldPrice = this.element.getByTestId('card-old-price');
-  readonly info = this.element.getByTestId('card-info');
-  readonly rating = this.element.getByTestId('card-rating-value');
-  readonly reviewCount = this.element.getByTestId('card-review-count');
-  readonly cartButton = this.element.getByTestId('card-basket-action');
-  readonly comparisonButton = this.element.getByTestId('card-comparison');
-  readonly favoritesButton = this.element.getByTestId('card-favorites');
-  readonly monthlyPayment = this.element.getByTestId('card-monthly-payment');
+  private readonly price = this.element.getByTestId('card-current-price');
+  private readonly oldPrice = this.element.getByTestId('card-old-price');
+  private readonly info = this.element.getByTestId('card-info');
+  private readonly rating = this.element.getByTestId('card-rating-value');
+  private readonly reviewCount = this.element.getByTestId('card-review-count');
+  private readonly cartButton = this.element.getByTestId('card-basket-action');
+  private readonly comparisonButton = this.element.getByTestId('card-comparison');
+  private readonly favoritesButton = this.element.getByTestId('card-favorites');
+  private readonly monthlyPayment = this.element.getByTestId('card-monthly-payment');
 
   constructor(element: Locator) {
     super(element);
   }
 
+  // --- Actions ---
+
+  async addToCart(): Promise<void> {
+    await this.cartButton.click();
+  }
+
+  async addToFavorites(): Promise<void> {
+    await this.favoritesButton.click();
+  }
+
+  async addToComparison(): Promise<void> {
+    await this.comparisonButton.click();
+  }
+
+  // --- Getters ---
+
   async getPrice(): Promise<number> {
-    const text = await this.price.textContent();
-    return Number(text?.replace(/[^\d,]/g, '').replace(',', '.'));
+    return parsePrice(await this.price.textContent());
   }
 
   async getOldPrice(): Promise<number> {
-    const text = await this.oldPrice.textContent();
-    return Number(text?.replace(/[^\d,]/g, '').replace(',', '.'));
+    return parsePrice(await this.oldPrice.textContent());
   }
 
   async getInfo(): Promise<string | null> {
@@ -34,20 +49,27 @@ export class ProductCard extends BaseComponent {
     return this.rating.textContent();
   }
 
-  async addToCart(): Promise<void> {
-    await this.cartButton.click();
+  async getReviewCount(): Promise<string | null> {
+    return this.reviewCount.textContent();
   }
 
   async getCartButtonText(): Promise<string | null> {
     return this.cartButton.textContent();
   }
 
-  async addToFavorites(): Promise<void> {
-    await this.favoritesButton.click();
+  // --- Assertions ---
+
+  async expectInCart(): Promise<void> {
+    await expect(this.cartButton).toContainText('В корзине');
   }
 
-  async addToComparison(): Promise<void> {
-    await this.comparisonButton.click();
+  async expectPriceGreaterThan(min: number): Promise<void> {
+    const price = await this.getPrice();
+    expect(price).toBeGreaterThan(min);
+  }
+
+  async expectInfoContains(text: string): Promise<void> {
+    const info = await this.getInfo();
+    expect(info?.toLowerCase()).toContain(text.toLowerCase());
   }
 }
-

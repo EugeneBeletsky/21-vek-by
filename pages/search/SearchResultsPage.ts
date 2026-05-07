@@ -11,7 +11,7 @@ export class SearchResultsPage extends BasePage {
   }
 
   async waitForResults(timeout = 10000): Promise<void> {
-    await this.products.waitForResults(timeout);
+    await this.products.waitForVisible(timeout);
   }
 }
 

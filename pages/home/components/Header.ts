@@ -52,4 +52,8 @@ export class Search extends BaseComponent {
   async expectSuggestVisible(): Promise<void> {
     await expect(this.suggestList).toBeVisible();
   }
+
+  async expectSearchInputVisible(): Promise<void> {
+    await expect(this.searchInput).toBeVisible();
+  }
 }

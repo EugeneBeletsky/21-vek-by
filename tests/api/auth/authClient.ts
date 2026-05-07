@@ -11,7 +11,7 @@ export class AuthClient {
     this.request = request;
   }
 
-  async login(email = config.credentials.valid.email, password = config.credentials.valid.password): Promise<APIResponse> {
+  async login(email = config.credentials.email, password = config.credentials.password): Promise<APIResponse> {
     const response = await this.request.post('/sso/login-by-email', {
       data: { email, password },
     });
