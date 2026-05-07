@@ -7,7 +7,7 @@ type ApiFixtures = {
   apiContext: APIRequestContext;
   authClient: AuthClient;
   catalog: Catalog;
-  authenticatedCatalog: Catalog;
+  authCatalog: Catalog;
 };
 
 export const test = base.extend<ApiFixtures>({
@@ -25,7 +25,7 @@ export const test = base.extend<ApiFixtures>({
     await use(new Catalog(apiContext));
   },
 
-  authenticatedCatalog: async ({ authClient, catalog }, use) => {
+  authCatalog: async ({ authClient, catalog }, use) => {
     await authClient.login();
     await use(catalog);
   },
