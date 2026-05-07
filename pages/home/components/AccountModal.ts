@@ -2,23 +2,48 @@ import BaseComponent from '../../components/BaseComponent';
 import { Locator } from '@playwright/test';
 
 export default class AccountModal extends BaseComponent {
-  private userToolsToggler = this.element.locator('button.styles_userToolsToggler__c2aHe');
-  private loginButton = this.element.getByTestId('loginButton');
-  private accountButtons = this.element.locator('div.ProfileItem_item__ETAVi');
+  private readonly loginButton = this.element.getByTestId('loginButton');
+  private readonly cartButton = this.element.getByRole('link', { name: 'Корзина' });
+  private readonly premiumButton = this.element.getByRole('link', { name: '21vek.by Premium' });
+  private readonly savedButton = this.element.getByRole('link', { name: 'Избранные товары' });
+  private readonly compareButton = this.element.getByRole('link', { name: 'Списки сравнения' });
+  private readonly payPartialButton = this.element.getByRole('link', { name: 'Оплата частями' });
+  private readonly watchedButton = this.element.getByRole('link', { name: 'Просмотренные' });
+  private readonly logoutButton = this.element.getByRole('link', { name: 'Выход' });
 
   constructor(element: Locator) {
     super(element);
   }
 
-  async clickLoginButton() {
+  async clickLogin(): Promise<void> {
     await this.loginButton.click();
   }
 
-  async getLoginButton() {
-    return this.loginButton;
+  async clickCart(): Promise<void> {
+    await this.cartButton.click();
   }
 
-  async getAccountButtonByText(text: string) {
-    return this.accountButtons.filter({ hasText: text });
+  async clickSaved(): Promise<void> {
+    await this.savedButton.click();
   }
-} 
+
+  async clickCompare(): Promise<void> {
+    await this.compareButton.click();
+  }
+
+  async clickWatched(): Promise<void> {
+    await this.watchedButton.click();
+  }
+
+  async clickLogout(): Promise<void> {
+    await this.logoutButton.click();
+  }
+
+  async expectVisible(): Promise<void> {
+    await super.expectVisible();
+  }
+
+  async expectLoginButtonVisible(): Promise<void> {
+    await super.expectVisible();
+  }
+}

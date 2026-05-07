@@ -7,31 +7,15 @@ export default class BasePage {
     this.page = page;
   }
 
-  public async goto(path: string = '/'): Promise<void> {
+  async goto(path: string = '/'): Promise<void> {
     await this.page.goto(path, { waitUntil: 'domcontentloaded' });
   }
 
-  public async waitForPageTitle(expectedTitle: string): Promise<void> {
+  async expectTitle(expectedTitle: string): Promise<void> {
     await expect(this.page).toHaveTitle(expectedTitle);
   }
 
-  public async waitForSelector(selector: string): Promise<void> {
-    await this.page.waitForSelector(selector, { state: 'visible' });
-  }
-
-  public async isVisible(selector: string): Promise<boolean> {
-    return await this.page.locator(selector).isVisible();
-  }
-
-  public async click(selector: string): Promise<void> {
-    await this.page.click(selector, { timeout: 5000 });
-  }
-
-  public async type(selector: string, text: string): Promise<void> {
-    await this.page.fill(selector, text, { timeout: 5000 });
-  }
-
-  public async getText(selector: string): Promise<string> {
-    return this.page.locator(selector).innerText();
+  async expectUrl(expectedUrl: string | RegExp): Promise<void> {
+    await expect(this.page).toHaveURL(expectedUrl);
   }
 }

@@ -5,13 +5,7 @@ dotenv.config();
 export const config = {
   baseURL: process.env.BASE_URL || 'https://www.21vek.by',
   credentials: {
-    valid: {
-      email: process.env.LOGIN_EMAIL || '',
-      password: process.env.LOGIN_PASSWORD || '',
-    },
-    invalid: {
-      email: 'invalid_email@gmail.com',
-      password: 'wrong_password',
-    },
+    email: process.env.LOGIN_EMAIL,
+    password: process.env.LOGIN_PASSWORD,
   },
 };

@@ -1,5 +1,6 @@
 import { test, expect } from '../../../fixtures/api.fixture';
 import { config } from '../../../utils/config';
+import { faker } from '@faker-js/faker';
 
 test.describe('API: [Login]', () => {
   test('T1 [Login] Success login', { tag: ['@api', '@regression', '@P1'] }, async ({ authClient }) => {
@@ -14,13 +15,13 @@ test.describe('API: [Login]', () => {
   });
 
   test('T2 [Login] Failed login with invalid password', { tag: ['@api', '@regression', '@P2'] }, async ({ authClient }) => {
-    const response = await authClient.login(config.credentials.valid.email, config.credentials.invalid.password);
+    const response = await authClient.login(config.credentials.email, faker.internet.password());
 
     expect(response.status()).toBe(422);
   });
 
   test('T3 [Login] Failed login with invalid email', { tag: ['@api', '@regression', '@P2'] }, async ({ authClient }) => {
-    const response = await authClient.login(config.credentials.invalid.email, config.credentials.valid.password);
+    const response = await authClient.login(faker.internet.email(), config.credentials.password);
 
     expect(response.status()).toBe(422);
   });

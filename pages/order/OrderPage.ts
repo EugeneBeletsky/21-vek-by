@@ -10,8 +10,7 @@ export class OrderPage extends BasePage {
     this.basketItems = new BasketItemList(page.getByTestId('basket-container'));
   }
 
-  async waitForBasket(timeout = 10000): Promise<void> {
-    await this.basketItems.waitForResults(timeout);
+  async waitForBasket(): Promise<void> {
+    await this.basketItems.expectVisible();
   }
 }
-
