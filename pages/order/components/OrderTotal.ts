@@ -10,10 +10,6 @@ export class OrderTotal extends BaseComponent {
   private readonly totalDiscount = this.element.getByTestId('total-discount');
   private readonly bonuses = this.element.getByTestId('bonuses');
   private readonly basketConfirmationButton = this.element.getByTestId('basketConfirmation');
-  private readonly promocodePlaceholder = this.element.getByPlaceholder('Введите промокод');
-  private readonly promocodeConfirmationButton = this.element.getByTestId('promocodeConfirmation');
-  private readonly errorMessagePromocode = this.element.locator('.ErrorMessage-module__message');
-
 
   constructor(element: Locator) {
     super(element);
@@ -21,16 +17,8 @@ export class OrderTotal extends BaseComponent {
 
   // --- Actions ---
 
-  async fillPromocode(promocode:string): Promise<void> {
-    await this.promocodePlaceholder.fill(promocode);
-  }
-
   async confirmOrder(): Promise<void> {
     await this.basketConfirmationButton.click();
-  }
-
-  async confirmPromocode(): Promise<void> {
-    await this.promocodeConfirmationButton.click();
   }
 
   // --- Getters ---
@@ -57,10 +45,6 @@ export class OrderTotal extends BaseComponent {
   }
 
   // --- Assertions ---
-
-  async expecErrorMessagePromocode(text: string): Promise<void> {
-    await expect(this.errorMessagePromocode).toContainText(text);
-  }
 
   async expectTotalPrice(expected: number): Promise<void> {
     const price = await this.getTotalPrice();
