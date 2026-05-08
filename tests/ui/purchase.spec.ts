@@ -44,7 +44,7 @@ test.describe('[Purchase]', () => {
   );
 
   test(
-    'T3 [Purchase] order page shows correct item details after adding to cart',
+    'T3 [Purchase] order page shows correct item details after adding to cart at Basket section',
     { tag: ['@regression', '@P2'] },
     async ({ authHomePage, searchResultsPage, orderPage, emptyCart: _ }) => {
       const product = await searchAndGetFirstProduct(authHomePage, searchResultsPage);
@@ -68,6 +68,55 @@ test.describe('[Purchase]', () => {
       expect(discount).toBeGreaterThan(0);
       expect(price).toBeLessThan(oldPrice);
       expect(price).toBe(oldPrice - discount);
+    },
+  );
+
+  test(
+    'T4 [Purchase] order page shows correct item details after adding to cart at Total section',
+    { tag: ['@regression', '@P2'] },
+    async ({ authHomePage, searchResultsPage, orderPage, emptyCart: _ }) => {
+      const product = await searchAndGetFirstProduct(authHomePage, searchResultsPage);
+
+      await product.addToCart();
+      await product.expectInCart();
+      await product.addToCart();
+      await orderPage.expectUrl(/\/order/);
+      await orderPage.waitForTotal();
+
+      const orderTotal = await orderPage.orderTotal.getTotalPrice();
+      const totalSummaryPrice = await orderPage.orderTotal.geTotalSummaryPrice();
+      const totalSummaryCount = await orderPage.orderTotal.geTotalSummaryCount();
+      const bonuses = await orderPage.orderTotal.getBonuses();
+      const totalDiscount = await orderPage.orderTotal.getTotalDiscount();
+
+      expect(orderTotal).toBeGreaterThan(0);
+      expect(totalSummaryPrice).toBeGreaterThan(0);
+      expect(totalSummaryCount).toBeGreaterThan(0);
+      expect(bonuses).toBeGreaterThan(0);
+      expect(totalDiscount).toBeGreaterThan(0);
+      expect(orderTotal).toBe(totalSummaryPrice - totalDiscount);
+    },
+  );
+
+  test(
+    'T5 [Purchase] Check fill invalid promocode',
+    { tag: ['@regression', '@P2'] },
+    async ({ authHomePage, searchResultsPage, orderPage, emptyCart: _ }) => {
+      const product = await searchAndGetFirstProduct(authHomePage, searchResultsPage);
+
+      await product.addToCart();
+      await product.expectInCart();
+      await product.addToCart();
+      await orderPage.expectUrl(/\/order/);
+      await orderPage.waitForTotal();
+
+      const orderTotalBeforePromocode = await orderPage.orderTotal.getTotalPrice();
+      await orderPage.orderPromocode.fillPromocode('BLZ');
+      await orderPage.orderPromocode.confirmPromocode();
+      await orderPage.waitForPromoCodesResponse();
+      await orderPage.orderPromocode.expectErrorMessagePromocode('Промокод недействителен');
+      const orderTotalAfterPromocodeConfirm = await orderPage.orderTotal.getTotalPrice();
+      expect(orderTotalBeforePromocode).toBe(orderTotalAfterPromocodeConfirm);
     },
   );
 });
