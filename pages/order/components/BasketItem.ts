@@ -42,7 +42,6 @@ export class BasketItem extends BaseComponent {
   }
 
   async getPrice(): Promise<number> {
-    // nth(1) — второй .PriceBlock — итоговая цена со скидкой
     return parsePrice(await this.currentPriceEl.nth(1).textContent());
   }
 
