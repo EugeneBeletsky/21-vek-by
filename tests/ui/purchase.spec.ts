@@ -1,5 +1,6 @@
 import { test, expect } from '../../fixtures/test.fixture';
 import { ProductCard } from '../../pages/search/components/ProductCard';
+import { CardData } from '../../pages/payment/WebpayPaymentPage';
 
 test.describe('[Purchase]', () => {
   /**
@@ -117,6 +118,41 @@ test.describe('[Purchase]', () => {
       await orderPage.orderPromocode.expectErrorMessagePromocode('Промокод недействителен');
       const orderTotalAfterPromocodeConfirm = await orderPage.orderTotal.getTotalPrice();
       expect(orderTotalBeforePromocode).toBe(orderTotalAfterPromocodeConfirm);
+    },
+  );
+
+  test(
+    'T6 [Purchase] search product, add to cart and fill card data',
+    { tag: ['@regression', '@P2'] },
+    async ({ authHomePage, searchResultsPage, orderPage, webpayPaymentPage, emptyCart: _ }) => {
+      const product = await searchAndGetFirstProduct(authHomePage, searchResultsPage);
+      const card: CardData = {
+        number: '4111111111111111',
+        month: '12',
+        year: '30',
+        holder: 'TEST USER',
+        cvv: '123',
+        email: 'test@example.com',
+      };
+
+      await product.addToCart();
+      await product.expectInCart();
+      await product.addToCart();
+      await orderPage.expectUrl(/\/order/);
+      await orderPage.waitForTotal();
+
+      await orderPage.orderTotal.confirmOrder();
+      await orderPage.waitForDelivery();
+      await orderPage.deliveryPage.continueToPayment();
+      await orderPage.waitForPayment();
+      await orderPage.paymentPage.submitOnlinePayment();
+      await orderPage.privacyAgreementModal.declineIfVisible();
+
+      await webpayPaymentPage.expectReady();
+      await webpayPaymentPage.fillCardData(card);
+      await webpayPaymentPage.expectCardData(card);
+      await webpayPaymentPage.returnBack();
+      await orderPage.waitForCanceledOrder();
     },
   );
 });

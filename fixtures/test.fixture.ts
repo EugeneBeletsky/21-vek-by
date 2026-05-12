@@ -2,6 +2,7 @@ import { test as base, Cookie } from '@playwright/test';
 import HomePage from '../pages/home/HomePage';
 import { SearchResultsPage } from '../pages/search/SearchResultsPage';
 import { OrderPage } from '../pages/order/OrderPage';
+import { WebpayPaymentPage } from '../pages/payment/WebpayPaymentPage';
 import { CartClient } from '../tests/api/cart/cartClient';
 import { createAuthenticatedAPIContext } from '../api/request';
 import { loginViaApi } from '../utils/login';
@@ -11,6 +12,7 @@ type TestFixtures = {
   homePage: HomePage;
   searchResultsPage: SearchResultsPage;
   orderPage: OrderPage;
+  webpayPaymentPage: WebpayPaymentPage;
   authHomePage: HomePage;
   emptyCart: void;
 };
@@ -43,6 +45,10 @@ export const test = base.extend<TestFixtures, WorkerFixtures>({
 
   orderPage: async ({ page }, use) => {
     await use(new OrderPage(page));
+  },
+
+  webpayPaymentPage: async ({ page }, use) => {
+    await use(new WebpayPaymentPage(page));
   },
 
   /**
