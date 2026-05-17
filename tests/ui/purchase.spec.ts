@@ -122,6 +122,7 @@ test.describe('[Purchase]', () => {
     },
   );
 
+  //to avoid order paywments email from 21vek.by
   test.skip(
     'T6 [Purchase] search product, add to cart and fill card data',
     { tag: ['@regression', '@P2'] },
