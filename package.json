@@ -38,8 +38,8 @@
   },
   "homepage": "https://github.com/EugeneBeletsky/21-vek-by#readme",
   "dependencies": {
-    "@playwright/test": "^1.59.1",
-    "@types/node": "^25.6.0",
+    "@playwright/test": "^1.60.0",
+    "@types/node": "^25.8.0",
     "dayjs": "^1.11.20",
     "dotenv": "^17.4.2",
     "typescript": "^6.0.3"
