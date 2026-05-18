@@ -12,11 +12,12 @@ const card: CardData = {
 };
 
 test.describe('[Webpay payment]', () => {
-  test(
+  //to avoid order paywments email from 21vek.by
+  test.skip(
     'T1 [Webpay payment] user can fill card data without payment submit',
     { tag: ['@regression', '@P2'] },
     async ({ authHomePage, searchResultsPage, orderPage, webpayPaymentPage, emptyCart: _ }) => {
-      await openWebpayCardForm(authHomePage, searchResultsPage, orderPage);
+      await openWebpayCardForm(authHomePage, searchResultsPage, orderPage, 'телевизор');
       await webpayPaymentPage.expectReady();
 
       await webpayPaymentPage.fillCardData(card);

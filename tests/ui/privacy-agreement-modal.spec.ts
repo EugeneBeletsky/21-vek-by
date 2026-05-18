@@ -2,11 +2,12 @@ import { test } from '../../fixtures/test.fixture';
 import { openPaymentStep } from './helpers/purchaseFlow';
 
 test.describe('[Privacy agreement modal]', () => {
-  test(
+  //to avoid order paywments email from 21vek.by
+  test.skip(
     'T1 [Privacy agreement modal] user can decline advertising consent',
     { tag: ['@regression', '@P2'] },
     async ({ authHomePage, searchResultsPage, orderPage, emptyCart: _ }) => {
-      await openPaymentStep(authHomePage, searchResultsPage, orderPage);
+      await openPaymentStep(authHomePage, searchResultsPage, orderPage, 'телевизор');
       await orderPage.paymentPage.submitOnlinePayment();
 
       const isModalShown = await orderPage.privacyAgreementModal

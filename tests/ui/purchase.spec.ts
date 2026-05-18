@@ -10,8 +10,9 @@ test.describe('[Purchase]', () => {
   async function searchAndGetFirstProduct(
     homePage: Awaited<Parameters<Parameters<typeof test>[2]>[0]>['authHomePage'],
     searchResultsPage: Awaited<Parameters<Parameters<typeof test>[2]>[0]>['searchResultsPage'],
+    item: string
   ): Promise<ProductCard> {
-    await homePage.header.search.searchItem('телевизор');
+    await homePage.header.search.searchItem(item);
     await searchResultsPage.waitForResults();
     return searchResultsPage.products.getItem(0);
   }
@@ -20,7 +21,7 @@ test.describe('[Purchase]', () => {
     'T1 [Purchase] add first search result to cart',
     { tag: ['@regression', '@P2'] },
     async ({ authHomePage, searchResultsPage, emptyCart: _ }) => {
-      const product = await searchAndGetFirstProduct(authHomePage, searchResultsPage);
+      const product = await searchAndGetFirstProduct(authHomePage, searchResultsPage, 'телевизор');
 
       await product.expectPriceGreaterThan(0);
       await product.expectInfoContains('телевизор');
@@ -34,7 +35,7 @@ test.describe('[Purchase]', () => {
     'T2 [Purchase] clicking cart button when already in cart redirects to order page',
     { tag: ['@regression', '@P2'] },
     async ({ authHomePage, searchResultsPage, orderPage, emptyCart: _ }) => {
-      const product = await searchAndGetFirstProduct(authHomePage, searchResultsPage);
+      const product = await searchAndGetFirstProduct(authHomePage, searchResultsPage, 'телевизор');
 
       await product.addToCart();
       await product.expectInCart();
@@ -48,7 +49,7 @@ test.describe('[Purchase]', () => {
     'T3 [Purchase] order page shows correct item details after adding to cart at Basket section',
     { tag: ['@regression', '@P2'] },
     async ({ authHomePage, searchResultsPage, orderPage, emptyCart: _ }) => {
-      const product = await searchAndGetFirstProduct(authHomePage, searchResultsPage);
+      const product = await searchAndGetFirstProduct(authHomePage, searchResultsPage, 'телевизор');
 
       await product.addToCart();
       await product.expectInCart();
@@ -76,7 +77,7 @@ test.describe('[Purchase]', () => {
     'T4 [Purchase] order page shows correct item details after adding to cart at Total section',
     { tag: ['@regression', '@P2'] },
     async ({ authHomePage, searchResultsPage, orderPage, emptyCart: _ }) => {
-      const product = await searchAndGetFirstProduct(authHomePage, searchResultsPage);
+      const product = await searchAndGetFirstProduct(authHomePage, searchResultsPage, 'телевизор');
 
       await product.addToCart();
       await product.expectInCart();
@@ -103,7 +104,7 @@ test.describe('[Purchase]', () => {
     'T5 [Purchase] Check fill invalid promocode',
     { tag: ['@regression', '@P2'] },
     async ({ authHomePage, searchResultsPage, orderPage, emptyCart: _ }) => {
-      const product = await searchAndGetFirstProduct(authHomePage, searchResultsPage);
+      const product = await searchAndGetFirstProduct(authHomePage, searchResultsPage, 'телевизор');
 
       await product.addToCart();
       await product.expectInCart();
@@ -121,11 +122,12 @@ test.describe('[Purchase]', () => {
     },
   );
 
-  test(
+  //to avoid order paywments email from 21vek.by
+  test.skip(
     'T6 [Purchase] search product, add to cart and fill card data',
     { tag: ['@regression', '@P2'] },
     async ({ authHomePage, searchResultsPage, orderPage, webpayPaymentPage, emptyCart: _ }) => {
-      const product = await searchAndGetFirstProduct(authHomePage, searchResultsPage);
+      const product = await searchAndGetFirstProduct(authHomePage, searchResultsPage, 'телевизор');
       const card: CardData = {
         number: '4111111111111111',
         month: '12',
