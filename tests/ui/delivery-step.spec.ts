@@ -4,7 +4,7 @@ import { openDeliveryStep } from './helpers/purchaseFlow';
 test.describe('[Delivery]', () => {
   test(
     'T1 [Delivery] delivery step is shown after order confirmation',
-    { tag: ['@regression', '@P2'] },
+    { tag: ['@ui', '@regression', '@P2'] },
     async ({ authHomePage, searchResultsPage, orderPage, emptyCart: _ }) => {
       await openDeliveryStep(authHomePage, searchResultsPage, orderPage, 'телевизор');
 

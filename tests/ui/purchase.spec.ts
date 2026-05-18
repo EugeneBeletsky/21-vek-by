@@ -19,7 +19,7 @@ test.describe('[Purchase]', () => {
 
   test(
     'T1 [Purchase] add first search result to cart',
-    { tag: ['@regression', '@P2'] },
+    { tag: ['@ui', '@regression', '@P2'] },
     async ({ authHomePage, searchResultsPage, emptyCart: _ }) => {
       const product = await searchAndGetFirstProduct(authHomePage, searchResultsPage, 'телевизор');
 
@@ -33,7 +33,7 @@ test.describe('[Purchase]', () => {
 
   test(
     'T2 [Purchase] clicking cart button when already in cart redirects to order page',
-    { tag: ['@regression', '@P2'] },
+    { tag: ['@ui', '@regression', '@P2'] },
     async ({ authHomePage, searchResultsPage, orderPage, emptyCart: _ }) => {
       const product = await searchAndGetFirstProduct(authHomePage, searchResultsPage, 'телевизор');
 
@@ -47,7 +47,7 @@ test.describe('[Purchase]', () => {
 
   test(
     'T3 [Purchase] order page shows correct item details after adding to cart at Basket section',
-    { tag: ['@regression', '@P2'] },
+    { tag: ['@ui', '@regression', '@P2'] },
     async ({ authHomePage, searchResultsPage, orderPage, emptyCart: _ }) => {
       const product = await searchAndGetFirstProduct(authHomePage, searchResultsPage, 'телевизор');
 
@@ -75,7 +75,7 @@ test.describe('[Purchase]', () => {
 
   test(
     'T4 [Purchase] order page shows correct item details after adding to cart at Total section',
-    { tag: ['@regression', '@P2'] },
+    { tag: ['@ui', '@regression', '@P2'] },
     async ({ authHomePage, searchResultsPage, orderPage, emptyCart: _ }) => {
       const product = await searchAndGetFirstProduct(authHomePage, searchResultsPage, 'телевизор');
 
@@ -102,7 +102,7 @@ test.describe('[Purchase]', () => {
 
   test(
     'T5 [Purchase] Check fill invalid promocode',
-    { tag: ['@regression', '@P2'] },
+    { tag: ['@ui', '@regression', '@P2'] },
     async ({ authHomePage, searchResultsPage, orderPage, emptyCart: _ }) => {
       const product = await searchAndGetFirstProduct(authHomePage, searchResultsPage, 'телевизор');
 
@@ -125,7 +125,7 @@ test.describe('[Purchase]', () => {
   //to avoid order paywments email from 21vek.by
   test.skip(
     'T6 [Purchase] search product, add to cart and fill card data',
-    { tag: ['@regression', '@P2'] },
+    { tag: ['@ui', '@regression', '@P2', '@smoke'] },
     async ({ authHomePage, searchResultsPage, orderPage, webpayPaymentPage, emptyCart: _ }) => {
       const product = await searchAndGetFirstProduct(authHomePage, searchResultsPage, 'телевизор');
       const card: CardData = {

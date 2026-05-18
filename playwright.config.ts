@@ -12,12 +12,13 @@ export default defineConfig({
   workers: process.env.CI ? 2 : undefined,
   reporter: process.env.CI
     ? [
+      ['line'],
       ['html', { outputFolder: 'playwright-report', open: 'never' }],
-      ['allure-playwright', { outputFolder: 'allure-results' }],
+      ['allure-playwright', { outputFolder: process.env.ALLURE_RESULTS_DIR || 'allure-results' }],
     ]
     : [
       ['html'],
-      ['allure-playwright', { outputFolder: 'allure-results' }],
+      ['allure-playwright', { outputFolder: process.env.ALLURE_RESULTS_DIR || 'allure-results' }],
     ],
   use: {
     baseURL: process.env.BASE_URL || 'https://www.21vek.by',

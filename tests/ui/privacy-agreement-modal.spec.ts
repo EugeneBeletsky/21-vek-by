@@ -5,7 +5,7 @@ test.describe('[Privacy agreement modal]', () => {
   //to avoid order paywments email from 21vek.by
   test.skip(
     'T1 [Privacy agreement modal] user can decline advertising consent',
-    { tag: ['@regression', '@P2'] },
+    { tag: ['@ui', '@regression', '@P2'] },
     async ({ authHomePage, searchResultsPage, orderPage, emptyCart: _ }) => {
       await openPaymentStep(authHomePage, searchResultsPage, orderPage, 'телевизор');
       await orderPage.paymentPage.submitOnlinePayment();

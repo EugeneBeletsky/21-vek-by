@@ -16,7 +16,7 @@
     "typecheck": "tsc --noEmit",
     "verify": "npm run lint && npm run typecheck",
     "test": "playwright test",
-    "test:ui": "playwright test --grep-invert @api --project=chromium",
+    "test:ui": "playwright test --grep @ui --project=chromium",
     "test:ui:auth": "playwright test --project=chromium-auth",
     "test:smoke": "playwright test --grep @smoke",
     "test:regression": "playwright test --grep @regression",
