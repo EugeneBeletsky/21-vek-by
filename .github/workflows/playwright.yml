@@ -1,10 +1,9 @@
-name: Playwright Tests with Lint
+name: Playwright Tests
 
 on:
   push:
     branches: [main]
   workflow_dispatch:
-
 
 env:
   BASE_URL: ${{ secrets.BASE_URL }}
@@ -30,45 +29,126 @@ jobs:
       - run: npm run lint
       - run: npx tsc --noEmit
 
-  e2e-tests:
-    name: Run Playwright Tests in Docker
+  api-tests:
+    name: Run API Tests in Docker
     needs: lint-and-check
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     container:
       image: mcr.microsoft.com/playwright:v1.60.0-jammy
       env:
         BASE_URL: ${{ secrets.BASE_URL }}
         LOGIN_EMAIL: ${{ secrets.LOGIN_EMAIL }}
         LOGIN_PASSWORD: ${{ secrets.LOGIN_PASSWORD }}
+        NAME: ${{ secrets.NAME }}
+        ALLURE_RESULTS_DIR: allure-results-api
     steps:
       - uses: actions/checkout@v4
 
       - name: Install dependencies
         run: npm ci
 
-      - name: Run Playwright tests
-        id: playwright
-        run: npx playwright test --project=chromium
-        continue-on-error: true
+      - name: Run API tests
+        run: npm run test:api
 
-      - name: Install Java for Allure
-        if: always()
-        run: |
-          apt-get update
-          apt-get install -y default-jre-headless
-          java -version
-
-      - name: Generate Allure report
-        if: always()
-        run: npx allure generate allure-results --clean -o allure-report
-
-      - name: Upload Allure results
+      - name: Upload API Allure results
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: allure-results
-          path: allure-results/
+          name: allure-results-api
+          path: allure-results-api/
           retention-days: 30
+
+      - name: Upload API HTML report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report-api
+          path: playwright-report/
+          retention-days: 30
+
+  ui-tests:
+    name: Run UI Tests in Docker
+    needs: lint-and-check
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    container:
+      image: mcr.microsoft.com/playwright:v1.60.0-jammy
+      env:
+        BASE_URL: ${{ secrets.BASE_URL }}
+        LOGIN_EMAIL: ${{ secrets.LOGIN_EMAIL }}
+        LOGIN_PASSWORD: ${{ secrets.LOGIN_PASSWORD }}
+        NAME: ${{ secrets.NAME }}
+        ALLURE_RESULTS_DIR: allure-results-ui
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run UI tests
+        run: npm run test:ui
+
+      - name: Upload UI Allure results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: allure-results-ui
+          path: allure-results-ui/
+          retention-days: 30
+
+      - name: Upload UI HTML report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report-ui
+          path: playwright-report/
+          retention-days: 30
+
+  allure-report:
+    name: Generate Allure Report
+    needs: [api-tests, ui-tests]
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Download API Allure results
+        uses: actions/download-artifact@v4
+        continue-on-error: true
+        with:
+          name: allure-results-api
+          path: downloaded-allure-results/api
+
+      - name: Download UI Allure results
+        uses: actions/download-artifact@v4
+        continue-on-error: true
+        with:
+          name: allure-results-ui
+          path: downloaded-allure-results/ui
+
+      - name: Merge Allure results
+        run: |
+          mkdir -p merged-allure-results
+          if [ -d "downloaded-allure-results/api" ]; then cp -r downloaded-allure-results/api/. merged-allure-results/; fi
+          if [ -d "downloaded-allure-results/ui" ]; then cp -r downloaded-allure-results/ui/. merged-allure-results/; fi
+
+      - name: Install Java for Allure
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y default-jre-headless
+          java -version
+
+      - name: Generate Allure report
+        run: npx allure generate merged-allure-results --clean -o allure-report
 
       - name: Upload Allure report
         uses: actions/upload-artifact@v4
@@ -78,22 +158,10 @@ jobs:
           path: allure-report/
           retention-days: 30
 
-      - name: Upload HTML report
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: playwright-report
-          path: playwright-report/
-          retention-days: 30
-
-      - name: Fail job if tests failed
-        if: always() && steps.playwright.outcome == 'failure'
-        run: exit 1
-
   deploy-allure:
     name: Deploy Allure Report to GitHub Pages
     runs-on: ubuntu-latest
-    needs: [e2e-tests]
+    needs: [allure-report]
     if: always() && github.ref == 'refs/heads/main'
     steps:
       - name: Checkout repository

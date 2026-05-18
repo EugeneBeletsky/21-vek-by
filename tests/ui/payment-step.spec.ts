@@ -5,7 +5,7 @@ test.describe('[Payment]', () => {
   //to avoid order paywments email from 21vek.by
   test.skip(
     'T1 [Payment] payment step is shown after delivery confirmation',
-    { tag: ['@regression', '@P2'] },
+    { tag: ['@ui', '@regression', '@P2'] },
     async ({ authHomePage, searchResultsPage, orderPage, emptyCart: _ }) => {
       await openPaymentStep(authHomePage, searchResultsPage, orderPage, 'телевизор');
 

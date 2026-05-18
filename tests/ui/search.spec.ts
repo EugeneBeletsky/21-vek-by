@@ -3,7 +3,7 @@ import { test, expect } from '../../fixtures/test.fixture';
 test.describe('[Search]', () => {
   test(
     'T1 [Search] search input is visible on authenticated home page',
-    { tag: ['@regression', '@P1'] },
+    { tag: ['@ui', '@regression', '@P1'] },
     async ({ authHomePage }) => {
       await authHomePage.header.search.expectSearchInputVisible();
     },
@@ -11,7 +11,7 @@ test.describe('[Search]', () => {
 
   test(
     'T2 [Search] searching returns results with price and matching name',
-    { tag: ['@regression', '@P2'] },
+    { tag: ['@ui', '@regression', '@P2'] },
     async ({ authHomePage, searchResultsPage }) => {
       await authHomePage.header.search.searchItem('телевизор');
       await searchResultsPage.waitForResults();
@@ -24,7 +24,7 @@ test.describe('[Search]', () => {
 
   test(
     'T3 [Search] all returned products have a price greater than 0',
-    { tag: ['@regression', '@P2'] },
+    { tag: ['@ui', '@regression', '@P2'] },
     async ({ authHomePage, searchResultsPage }) => {
       await authHomePage.header.search.searchItem('телевизор');
       await searchResultsPage.waitForResults();
@@ -34,7 +34,7 @@ test.describe('[Search]', () => {
 
   test(
     'T4 [Search] all returned products have a name containing the search query',
-    { tag: ['@regression', '@P2'] },
+    { tag: ['@ui', '@regression', '@P2'] },
     async ({ authHomePage, searchResultsPage }) => {
       await authHomePage.header.search.searchItem('телевизор');
       await searchResultsPage.waitForResults();

@@ -67,7 +67,7 @@ test.describe('[Login]', () => {
   });
 
   for (const testCase of loginCases) {
-    test(testCase.title, { tag: ['@regression', '@P1'] }, async ({ homePage }) => {
+    test(testCase.title, { tag: ['@ui', '@regression', '@P1'] }, async ({ homePage }) => {
       await homePage.header.openAccountMenu();
       await homePage.accountModal.clickLogin();
       await homePage.loginModal.expectVisible();
