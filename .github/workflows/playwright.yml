@@ -35,7 +35,7 @@ jobs:
     needs: lint-and-check
     runs-on: ubuntu-latest
     container:
-      image: mcr.microsoft.com/playwright:v1.59.1-jammy
+      image: mcr.microsoft.com/playwright:v1.60.0-jammy
       env:
         BASE_URL: ${{ secrets.BASE_URL }}
         LOGIN_EMAIL: ${{ secrets.LOGIN_EMAIL }}
