@@ -1,16 +1,20 @@
 import BaseComponent from '../../components/BaseComponent';
 import { Locator, expect } from '@playwright/test';
+import { FloaterModal } from '../../search/components/FloaterModal';
 
 export default class Header extends BaseComponent {
   private readonly accountToggler = this.element.locator('button.styles_userToolsToggler__c2aHe');
+  private readonly floaterModal: FloaterModal;
   public readonly search: Search;
 
   constructor(element: Locator) {
     super(element);
+    this.floaterModal = new FloaterModal(element.page().getByTestId('floater'));
     this.search = new Search(element);
   }
 
   async openAccountMenu(): Promise<void> {
+    await this.floaterModal.acceptIfVisible(1_000);
     await this.accountToggler.waitFor({ state: 'visible', timeout: 10_000 });
     await this.accountToggler.click();
   }
@@ -24,15 +28,20 @@ export class Search extends BaseComponent {
   private readonly searchInput = this.element.locator('input#catalogSearch');
   private readonly searchButton = this.element.locator('button.Search_searchBtn__Tk7Gw');
   private readonly suggestList = this.element.locator('.SearchSuggestList_listContainer__v7wVv');
+  private readonly floaterModal: FloaterModal;
 
   constructor(element: Locator) {
     super(element);
+    this.floaterModal = new FloaterModal(element.page().getByTestId('floater'));
   }
 
   async searchItem(query: string): Promise<void> {
-    await this.searchInput.fill(query);
+    await this.floaterModal.acceptIfVisible(1_000);
+    await this.expectSearchInputVisible();
     await this.searchInput.click();
-    await this.searchButton.waitFor({ state: 'visible' });
+    await this.searchInput.fill(query);
+    await this.floaterModal.acceptIfVisible(1_000);
+    await expect(this.searchButton).toBeEnabled();
     await this.searchButton.click();
   }
 
@@ -41,6 +50,7 @@ export class Search extends BaseComponent {
    * Throws if no matching suggestion is found.
    */
   async searchByExactSuggestion(query: string): Promise<void> {
+    await this.floaterModal.acceptIfVisible(1_000);
     await this.searchInput.fill(query);
     await this.suggestList.waitFor({ state: 'visible' });
 
