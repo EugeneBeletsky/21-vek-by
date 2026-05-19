@@ -14,11 +14,11 @@ export default defineConfig({
     ? [
       ['line'],
       ['html', { outputFolder: 'playwright-report', open: 'never' }],
-      ['allure-playwright', { outputFolder: process.env.ALLURE_RESULTS_DIR || 'allure-results' }],
+      ['allure-playwright', { resultsDir: process.env.ALLURE_RESULTS_DIR || 'allure-results' }],
     ]
     : [
       ['html'],
-      ['allure-playwright', { outputFolder: process.env.ALLURE_RESULTS_DIR || 'allure-results' }],
+      ['allure-playwright', { resultsDir: process.env.ALLURE_RESULTS_DIR || 'allure-results' }],
     ],
   use: {
     baseURL: process.env.BASE_URL || 'https://www.21vek.by',
