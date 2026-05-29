@@ -15,7 +15,7 @@ export class PartleyPayOrderModal extends BaseComponent {
     // Modal may appear with a small delay after navigation/render.
     // Close it if it appears, but don't fail the flow if it doesn't.
     try {
-      await this.element.waitFor({ state: 'visible', timeout: 2_000 });
+      await this.element.waitFor({ state: 'visible', timeout: 5_000 });
     } catch {
       // Not visible (or not attached) within timeout -> nothing to close.
       return;

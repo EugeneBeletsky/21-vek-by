@@ -19,32 +19,32 @@ export default class AccountModal extends BaseComponent {
   }
 
   async clickLogin(): Promise<void> {
-    await this.floaterModal.acceptIfVisible(1_000);
+    await this.floaterModal.acceptIfVisible(2_000);
     await this.loginButton.click();
   }
 
   async clickCart(): Promise<void> {
-    await this.floaterModal.acceptIfVisible(1_000);
+    await this.floaterModal.acceptIfVisible(2_000);
     await this.cartButton.click();
   }
 
   async clickSaved(): Promise<void> {
-    await this.floaterModal.acceptIfVisible(1_000);
+    await this.floaterModal.acceptIfVisible(2_000);
     await this.savedButton.click();
   }
 
   async clickCompare(): Promise<void> {
-    await this.floaterModal.acceptIfVisible(1_000);
+    await this.floaterModal.acceptIfVisible(2_000);
     await this.compareButton.click();
   }
 
   async clickWatched(): Promise<void> {
-    await this.floaterModal.acceptIfVisible(1_000);
+    await this.floaterModal.acceptIfVisible(2_000);
     await this.watchedButton.click();
   }
 
   async clickLogout(): Promise<void> {
-    await this.floaterModal.acceptIfVisible(1_000);
+    await this.floaterModal.acceptIfVisible(2_000);
     await this.logoutButton.click();
   }
 

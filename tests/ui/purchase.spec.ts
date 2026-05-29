@@ -114,8 +114,9 @@ test.describe('[Purchase]', () => {
 
       const orderTotalBeforePromocode = await orderPage.orderTotal.getTotalPrice();
       await orderPage.orderPromocode.fillPromocode('BLZ');
+      const pronoCodeResnonse = orderPage.waitForPromoCodesResponse();
       await orderPage.orderPromocode.confirmPromocode();
-      await orderPage.waitForPromoCodesResponse();
+      const response = await pronoCodeResnonse;
       await orderPage.orderPromocode.expectErrorMessagePromocode('Промокод недействителен');
       const orderTotalAfterPromocodeConfirm = await orderPage.orderTotal.getTotalPrice();
       expect(orderTotalBeforePromocode).toBe(orderTotalAfterPromocodeConfirm);

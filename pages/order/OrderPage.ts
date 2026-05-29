@@ -43,7 +43,12 @@ export class OrderPage extends BasePage {
   }
 
   async waitForPromoCodesResponse() {
-    await this.page.waitForResponse('https://gate.21vek.by/cart/carts/promo-codes');
+  //   await this.page.waitForResponse('https://gate.21vek.by/cart/carts/promo-codes');
+    const responsePromise = this.page.waitForResponse(response =>
+      response.url() === 'https://gate.21vek.by/cart/carts/promo-codes' && response.status() === 409
+      && response.request().method() === 'POST'
+    );
+    return responsePromise;
   }
 
   async waitForDelivery(): Promise<void> {

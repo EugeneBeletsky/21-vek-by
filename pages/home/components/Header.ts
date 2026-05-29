@@ -1,22 +1,32 @@
 import BaseComponent from '../../components/BaseComponent';
 import { Locator, expect } from '@playwright/test';
 import { FloaterModal } from '../../search/components/FloaterModal';
+import { CatalogMenuModal } from './CatalogMenuModal';
 
 export default class Header extends BaseComponent {
   private readonly accountToggler = this.element.locator('button.styles_userToolsToggler__c2aHe');
+  private readonly catalogMenuButton = this.element.locator('button', { hasText: 'Каталог товаров' });
   private readonly floaterModal: FloaterModal;
   public readonly search: Search;
+  public readonly catalogMenu: CatalogMenuModal;
 
   constructor(element: Locator) {
     super(element);
     this.floaterModal = new FloaterModal(element.page().getByTestId('floater'));
     this.search = new Search(element);
+    this.catalogMenu = new CatalogMenuModal(element.page().getByTestId('catalogPopup'));
   }
 
   async openAccountMenu(): Promise<void> {
-    await this.floaterModal.acceptIfVisible(1_000);
+    await this.floaterModal.acceptIfVisible(2_000);
     await this.accountToggler.waitFor({ state: 'visible', timeout: 10_000 });
     await this.accountToggler.click();
+  }
+
+  async openCatalogMenu(): Promise<void> {
+    await this.floaterModal.acceptIfVisible(2_000);
+    await this.catalogMenuButton.click();
+    await this.catalogMenu.waitForVisible();
   }
 
   async expectVisible(): Promise<void> {
@@ -36,11 +46,11 @@ export class Search extends BaseComponent {
   }
 
   async searchItem(query: string): Promise<void> {
-    await this.floaterModal.acceptIfVisible(1_000);
+    await this.floaterModal.acceptIfVisible(2_000);
     await this.expectSearchInputVisible();
     await this.searchInput.click();
     await this.searchInput.fill(query);
-    await this.floaterModal.acceptIfVisible(1_000);
+    await this.floaterModal.acceptIfVisible(2_000);
     await expect(this.searchButton).toBeEnabled();
     await this.searchButton.click();
   }
@@ -50,7 +60,7 @@ export class Search extends BaseComponent {
    * Throws if no matching suggestion is found.
    */
   async searchByExactSuggestion(query: string): Promise<void> {
-    await this.floaterModal.acceptIfVisible(1_000);
+    await this.floaterModal.acceptIfVisible(2_000);
     await this.searchInput.fill(query);
     await this.suggestList.waitFor({ state: 'visible' });
 
