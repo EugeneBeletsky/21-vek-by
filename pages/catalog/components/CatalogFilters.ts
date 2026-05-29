@@ -46,7 +46,29 @@ export class CatalogFilters extends BaseComponent {
   }
 
   async expandAllFilters(): Promise<void> {
-    await this.expandFiltersButton.click();
+    if (await this.expandFiltersButton.isVisible()) {
+      await this.expandFiltersButton.click();
+    }
+  }
+
+  /**
+   * Clicks a filter option button by text within a named attribute filter group.
+   * Uses the group's data-testid (e.g. 'attribute-1421') to scope the click.
+   * Case-insensitive partial text match.
+   */
+  async selectAttributeOption(attributeTestId: string, optionText: string): Promise<void> {
+    const group = this.element.getByTestId(attributeTestId);
+    await group.locator('button', { hasText: new RegExp(optionText, 'i') }).first().click();
+  }
+
+  /**
+   * Sets the upper bound of the Объем (volume) range filter.
+   * The volume filter lives under data-testid="attribute-1423".
+   */
+  async setVolumeMax(maxLiters: number): Promise<void> {
+    const volumeFilter = this.element.getByTestId('attribute-1423');
+    await volumeFilter.getByLabel('До, л').fill(String(maxLiters));
+    await volumeFilter.getByLabel('До, л').press('Enter');
   }
 
   // --- Assertions ---

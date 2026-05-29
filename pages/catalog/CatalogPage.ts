@@ -68,7 +68,7 @@ export class CatalogPage extends BasePage {
    */
   async waitForProducts(timeout = 30_000): Promise<void> {
     await this.productList.waitForVisible(timeout);
-    await this.floaterModal.acceptIfVisible();
+    await this.floaterModal.acceptIfVisible(2_000);
   }
 
   // --- Getters ---
